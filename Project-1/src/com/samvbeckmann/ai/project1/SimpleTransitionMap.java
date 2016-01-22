@@ -27,7 +27,7 @@ public class SimpleTransitionMap implements TransitionMap
      */
     public SimpleTransitionMap(State up, State right, State down, State left)
     {
-        transitions = new HashMap<Action, Map<State, Float>>();
+        transitions = new HashMap<>();
         transitions.put(Action.UP, makeSimpleTransitionTable(up, right, left));
         transitions.put(Action.RIGHT, makeSimpleTransitionTable(right, up, down));
         transitions.put(Action.DOWN, makeSimpleTransitionTable(down, left, right));
