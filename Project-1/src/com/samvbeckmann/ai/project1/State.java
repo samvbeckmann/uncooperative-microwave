@@ -8,14 +8,25 @@ import java.util.Map;
 public class State
 {
     private float reward;
-    private Map<Action, Map<State, Float>> transitions;
+    private TransitionMap transitions;
     private boolean isTerminal;
 
-    public State(int reward, Map<Action, Map<State, Float>> transitions, boolean isTerminal)
+    public State(int reward, TransitionMap transitions, boolean isTerminal)
     {
         this.reward = reward;
         this.transitions = transitions;
         this.isTerminal = isTerminal;
+    }
+
+    public State(float reward, boolean isTerminal)
+    {
+        this.reward = reward;
+        this.isTerminal = isTerminal;
+    }
+
+    public void setTransitions(TransitionMap transitions)
+    {
+        this.transitions = transitions;
     }
 
     public boolean isTerminal()
@@ -30,6 +41,6 @@ public class State
 
     public Map<State, Float> getPossibleOutcomes(Action action)
     {
-        return transitions.get(action);
+        return transitions.getTransitionTableFromAction(action);
     }
 }
