@@ -31,6 +31,9 @@ public class StrategyValueIteration extends Strategy
                 float stateDelta = Math.abs(adjustedUtility - currentUtilities.get(state));
                 delta = Math.max(delta, stateDelta);
             }
+
+            currentUtilities = nextUtilities;
+
         } while (delta > (epsilon * (1 - discount) / discount));
 
 
