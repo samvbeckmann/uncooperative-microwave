@@ -17,12 +17,11 @@ public class StrategyValueIteration extends Strategy
         float delta = 0;
 
         for(State state : states)
-        {
             currentUtilities.put(state, 0F);
-        }
 
         do
         {
+            delta = 0;
             for (State state : states)
             {
                 float adjustedUtility = state.getReward() + discount * AlgorithmHelper.getMaxExpectedUtility(currentUtilities, state);
