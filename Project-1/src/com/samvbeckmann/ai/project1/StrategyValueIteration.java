@@ -8,10 +8,19 @@ import java.util.Map;
  * Implementation of {@link Strategy}.
  * Uses value iteration to create a Policy for a given world.
  */
-public class StrategyValueIteration extends Strategy
+public class StrategyValueIteration implements Strategy
 {
+    private float discount;
+    private float epsilon;
+
+    public StrategyValueIteration(float discount, float epsilon)
+    {
+        this.discount = discount;
+        this.epsilon = epsilon;
+    }
+
     @Override
-    public Policy generatePolicy(List<State> states, float discount, float epsilon)
+    public Policy generatePolicy(List<State> states)
     {
         Map<State, Float> currentUtilities = new HashMap<>();
         Map<State, Float> nextUtilities = new HashMap<>();
@@ -38,5 +47,25 @@ public class StrategyValueIteration extends Strategy
 
 
         return AlgorithmHelper.getPolicyFromUtilities(currentUtilities);
+    }
+
+    public float getDiscount()
+    {
+        return discount;
+    }
+
+    public void setDiscount(float discount)
+    {
+        this.discount = discount;
+    }
+
+    public float getEpsilon()
+    {
+        return epsilon;
+    }
+
+    public void setEpsilon(float epsilon)
+    {
+        this.epsilon = epsilon;
     }
 }

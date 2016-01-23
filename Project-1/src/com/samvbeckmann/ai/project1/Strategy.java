@@ -9,16 +9,13 @@ import java.util.List;
  *
  * @author Sam Beckmann
  */
-public abstract class Strategy
+public interface Strategy
 {
     /**
-     * Creates a Policy from the world parameters.
+     * Creates a Policy from the world.
      *
      * @param states List of all states in the world, complete with their transition maps.
-     * @param discount Gamma value for the world, how rewards decrease over time.
-     * @param epsilon defines the accuracy to which the algorithm must converge
      * @return A Policy determined for the given world.
      */
-    public abstract Policy generatePolicy(List<State> states, float discount, float epsilon);
-    // TODO: make interface, remove args from generatePolicy
+    Policy generatePolicy(List<State> states);
 }

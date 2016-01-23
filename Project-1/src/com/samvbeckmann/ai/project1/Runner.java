@@ -13,7 +13,9 @@ public class Runner
 {
     public static void main(String[] args)
     {
-        Map<String, State> stateIDMap = new HashMap<String, State>();
+        // TODO: Make a good way to initialize the world.
+
+        Map<String, State> stateIDMap = new HashMap<>();
 
         stateIDMap.put("1-3", new State(-0.04F, false));
         stateIDMap.put("1-2", new State(-0.04F, false));
@@ -87,7 +89,7 @@ public class Runner
 
         states.addAll(stateIDMap.values().stream().collect(Collectors.toList()));
 
-        Policy policy = new StrategyValueIteration().generatePolicy(states, 0.7F, .001F);
+        Policy policy = new StrategyValueIteration(0.7F, 0.001F).generatePolicy(states);
 
 
         float totalReward = 0;
