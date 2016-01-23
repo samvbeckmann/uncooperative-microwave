@@ -4,7 +4,9 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * Created by sam on 1/22/16.
+ * Simulates the traversal of a maze with a given policy.
+ *
+ * @author Sam Beckmann
  */
 public class Simulation
 {
@@ -19,6 +21,11 @@ public class Simulation
         this.policy = policy;
     }
 
+    /**
+     * Executes simulation, calculating reward from simulation.
+     *
+     * @return net reward from the simulation.
+     */
     public float performSimulation()
     {
         try
@@ -31,6 +38,10 @@ public class Simulation
             }
         } catch (InvalidTransitionTableException e)
         {
+            Map<State, Float> transitionTable = currentState.getPossibleOutcomes(policy.getActionAtState(currentState));
+            for (State state : transitionTable.keySet())
+                System.err.println(state + " -> " + transitionTable.get(state));
+
             e.printStackTrace();
             System.exit(12);
         }
@@ -47,6 +58,13 @@ public class Simulation
         this.policy = policy;
     }
 
+    /**
+     * Takes a transition table, and randomly chooses an actual outcome.
+     *
+     * @param transition Transition table of subsequent state.
+     * @return State which is the actual outcome of the transition table.
+     * @throws InvalidTransitionTableException if transition table probabilities don't sum to 1.
+     */
     private State getActualOutcome(Map<State, Float> transition) throws InvalidTransitionTableException
     {
         float rollResult = rnd.nextFloat();

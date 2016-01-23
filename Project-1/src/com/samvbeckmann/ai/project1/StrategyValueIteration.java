@@ -5,16 +5,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by sam on 1/22/16.
+ * Implementation of {@link Strategy}.
+ * Uses value iteration to create a Policy for a given world.
  */
 public class StrategyValueIteration extends Strategy
 {
     @Override
     public Policy generatePolicy(List<State> states, float discount, float epsilon)
     {
-        Map<State, Float> currentUtilities = new HashMap<State, Float>();
-        Map<State, Float> nextUtilities = new HashMap<State, Float>();
-        float delta = 0;
+        Map<State, Float> currentUtilities = new HashMap<>();
+        Map<State, Float> nextUtilities = new HashMap<>();
+        float delta;
 
         for(State state : states)
             currentUtilities.put(state, 0F);

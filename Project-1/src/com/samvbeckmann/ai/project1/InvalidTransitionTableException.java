@@ -1,7 +1,11 @@
 package com.samvbeckmann.ai.project1;
 
 /**
- * Created by sam on 1/22/16.
+ * Exception thrown when a transition table does not
+ * have probabilities that add up to one.
+ * Indicates error with transition table.
+ *
+ * @author Sam Beckmann
  */
 public class InvalidTransitionTableException extends Exception
 {

@@ -1,7 +1,10 @@
 package com.samvbeckmann.ai.project1;
 
 /**
- * Created by sam on 1/22/16.
+ * Wrapper class around an action and it's expected utility.
+ * Without context, not worth particularly much as state is unknown.
+ *
+ * @author Sam Beckmann
  */
 public class ExpectedUtility
 {
