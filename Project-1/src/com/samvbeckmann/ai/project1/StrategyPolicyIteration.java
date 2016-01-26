@@ -19,28 +19,28 @@ public class StrategyPolicyIteration implements Strategy
     @Override
     public Policy generatePolicy(List<State> states)
     {
-        Map<State, Float> utilites = new HashMap<>();
+        Map<State, Float> utilities = new HashMap<>();
         Policy policy = new Policy();
 
         for(State state : states)
         {
-            utilites.put(state, 0F);
+            utilities.put(state, 0F);
             policy.updatePolicy(state, Action.randomAction());
         }
 
         boolean unchanged;
         do
         {
-            utilites = evaluatePolicy(policy, states, utilites);
+            utilities = evaluatePolicy(policy, states, utilities);
             unchanged = true;
             for (State state : states)
             {
-                float maxExpectedUtility = AlgorithmHelper.getMaxExpectedUtility(utilites, state);
-                float currentExpectedUtility = AlgorithmHelper.getExpectedUtility(utilites, state, policy.getActionAtState(state)).getUtility();
+                float maxExpectedUtility = AlgorithmHelper.getMaxExpectedUtility(utilities, state);
+                float currentExpectedUtility = AlgorithmHelper.getExpectedUtility(utilities, state, policy.getActionAtState(state)).getUtility();
 
                 if (maxExpectedUtility < currentExpectedUtility)
                 {
-                    policy.updatePolicy(state, AlgorithmHelper.getArgMaxExpectedUtility(utilites, state));
+                    policy.updatePolicy(state, AlgorithmHelper.getArgMaxExpectedUtility(utilities, state));
                     unchanged = false;
                 }
             }
