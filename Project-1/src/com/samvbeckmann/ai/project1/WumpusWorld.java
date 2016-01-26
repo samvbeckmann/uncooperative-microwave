@@ -103,6 +103,9 @@ public class WumpusWorld implements Maze
         stateIDMap.put("4-3-4", new State(stepCost, false));
         stateIDMap.put("4-4-4", new State(stepCost, false));
 
+        stateIDMap.get("wumpus").setTransitions(new NullTransitionMap(stateIDMap.get("wumpus")));
+        stateIDMap.get("terminal").setTransitions(new NullTransitionMap(stateIDMap.get("terminal")));
+
         /*
          Transitions for level 1
          */
@@ -262,9 +265,6 @@ public class WumpusWorld implements Maze
                 stateIDMap.get("4-4-2"), // RIGHT
                 stateIDMap.get("4-3-2"), // DOWN
                 stateIDMap.get("3-4-2"))); // LEFT
-
-        stateIDMap.get("wumpus").setTransitions(new NullTransitionMap(stateIDMap.get("wumpus")));
-        stateIDMap.get("terminal").setTransitions(new NullTransitionMap(stateIDMap.get("terminal")));
 
         /*
          Transitions for level 3
