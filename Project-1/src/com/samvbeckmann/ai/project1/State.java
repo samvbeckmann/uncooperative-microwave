@@ -15,18 +15,21 @@ public class State
     private float reward;
     private TransitionMap transitions;
     private boolean isTerminal;
+    private boolean isInitialized;
 
     public State(int reward, TransitionMap transitions, boolean isTerminal)
     {
         this.reward = reward;
         this.transitions = transitions;
         this.isTerminal = isTerminal;
+        isInitialized = true;
     }
 
     public State(float reward, boolean isTerminal)
     {
         this.reward = reward;
         this.isTerminal = isTerminal;
+        isInitialized = false;
     }
 
     public void setTransitions(TransitionMap transitions)

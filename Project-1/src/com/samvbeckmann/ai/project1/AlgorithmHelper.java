@@ -63,15 +63,23 @@ public final class AlgorithmHelper
         ExpectedUtility currentBestExpUtil = new ExpectedUtility(Action.UP, 0);
         for (Action action : Action.values())
         {
-            float actionUtil = 0;
-            Map<State, Float> possibleFutureStates = currentState.getPossibleOutcomes(action);
+            ExpectedUtility actionExpUtil = getExpectedUtility(utilityMap, currentState, action);
 
-            for (State nextState : possibleFutureStates.keySet()) // Sum expected utility over possibilities
-                actionUtil += possibleFutureStates.get(nextState) * utilityMap.get(nextState);
-
-            if (actionUtil > currentBestExpUtil.getUtility())
-                currentBestExpUtil = new ExpectedUtility(action, actionUtil);
+            if (actionExpUtil.getUtility() > currentBestExpUtil.getUtility())
+                currentBestExpUtil = actionExpUtil;
         }
         return currentBestExpUtil;
+    }
+
+    public static ExpectedUtility getExpectedUtility(Map<State, Float> utilityMap, State currentState, Action action)
+    {
+        float actionUtil = 0;
+        Map<State, Float> possibleFutureStates = currentState.getPossibleOutcomes(action);
+
+        for (State nextState : possibleFutureStates.keySet()) // Sum expected utility over possibilities
+            actionUtil += possibleFutureStates.get(nextState) * utilityMap.get(nextState);
+
+        return new ExpectedUtility(action, actionUtil);
+
     }
 }

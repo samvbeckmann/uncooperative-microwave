@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class SimpleTransitionMap implements TransitionMap
 {
-    private Map<Action, Map<State, Float>> transitions;
+    protected Map<Action, Map<State, Float>> transitions;
 
     /**
      * Creates transition map based on bordering states.
@@ -41,7 +41,7 @@ public class SimpleTransitionMap implements TransitionMap
      * @param secondAlternate Secondary direction, 0.1 chance of going towards.
      * @return Transition table, matching subsequent states with probabilities.
      */
-    private Map<State, Float> makeSimpleTransitionTable(State main, State firstAlternate, State secondAlternate)
+    protected Map<State, Float> makeSimpleTransitionTable(State main, State firstAlternate, State secondAlternate)
     {
         Map<State, Float> transitionTable = new HashMap<>();
 
