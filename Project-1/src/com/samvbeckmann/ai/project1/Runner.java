@@ -9,12 +9,13 @@ public class Runner
 
     public static void main(String[] args)
     {
-        Maze maze = new ExampleMaze();
+        Maze maze = new ExampleMaze(-0.04F, 1, -1);
 
-        Policy policy = new StrategyValueIteration(0.7F, 0.001F).generatePolicy(maze.getStates());
+//        Policy policy = new StrategyValueIteration(0.7F, 0.001F).generatePolicy(maze.getStates());
 
-//        Policy policy = new StrategyPolicyIteration(0.7F).generatePolicy(maze.getStates());
-        System.out.print(policy.toString());
+        Policy policy = new StrategyPolicyIteration(0.7F).generatePolicy(maze.getStates());
+
+        System.out.println(policy.toString());
 
         float totalReward = 0;
         for (int i = 0; i < NUM_TESTS; i++)
