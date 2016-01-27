@@ -16,17 +16,20 @@ public class State
     private TransitionMap transitions;
     private boolean isTerminal;
     private boolean isInitialized;
+    private String id;
 
-    public State(int reward, TransitionMap transitions, boolean isTerminal)
+    public State(String id, int reward, TransitionMap transitions, boolean isTerminal)
     {
+        this.id = id;
         this.reward = reward;
         this.transitions = transitions;
         this.isTerminal = isTerminal;
         isInitialized = true;
     }
 
-    public State(float reward, boolean isTerminal)
+    public State(String id, float reward, boolean isTerminal)
     {
+        this.id = id;
         this.reward = reward;
         this.isTerminal = isTerminal;
         isInitialized = false;
@@ -35,6 +38,7 @@ public class State
     public void setTransitions(TransitionMap transitions)
     {
         this.transitions = transitions;
+        isInitialized = true;
     }
 
     public boolean isTerminal()
@@ -55,6 +59,25 @@ public class State
      */
     public Map<State, Float> getPossibleOutcomes(Action action)
     {
-        return transitions.getTransitionTableFromAction(action);
+        Map<State, Float> transitionTable;
+        try
+        {
+            if (!isInitialized)
+                throw new Exception();
+            transitionTable = transitions.getTransitionTableFromAction(action);
+
+        } catch (Exception e)
+        {
+            System.err.print("State " + id + "not initialized!");
+            transitionTable = null;
+        }
+
+        return transitionTable;
+    }
+
+    @Override
+    public String toString()
+    {
+        return id;
     }
 }

@@ -23,17 +23,17 @@ public class ExampleMaze implements Maze
     public List<State> getStates()
     {
 
-        stateIDMap.put("1-3", new State(-0.04F, false));
-        stateIDMap.put("1-2", new State(-0.04F, false));
-        stateIDMap.put("1-1", new State(-0.04F, false));
-        stateIDMap.put("2-3", new State(-0.04F, false));
-        stateIDMap.put("2-1", new State(-0.04F, false));
-        stateIDMap.put("3-3", new State(-0.04F, false));
-        stateIDMap.put("3-2", new State(-0.04F, false));
-        stateIDMap.put("3-1", new State(-0.04F, false));
-        stateIDMap.put("4-3", new State(1F, true));
-        stateIDMap.put("4-2", new State(-1F, true));
-        stateIDMap.put("4-1", new State(-0.04F, false));
+        stateIDMap.put("1-3", new State("1-3", -0.04F, false));
+        stateIDMap.put("1-2", new State("1-2", -0.04F, false));
+        stateIDMap.put("1-1", new State("1-1", -0.04F, false));
+        stateIDMap.put("2-3", new State("2-3", -0.04F, false));
+        stateIDMap.put("2-1", new State("2-1", -0.04F, false));
+        stateIDMap.put("3-3", new State("3-3", -0.04F, false));
+        stateIDMap.put("3-2", new State("3-2", -0.04F, false));
+        stateIDMap.put("3-1", new State("3-1", -0.04F, false));
+        stateIDMap.put("4-3", new State("4-3", 1F, true));
+        stateIDMap.put("4-2", new State("4-2", -1F, true));
+        stateIDMap.put("4-1", new State("4-1", -0.04F, false));
 
         stateIDMap.get("1-3").setTransitions(new SimpleTransitionMap(
                 stateIDMap.get("1-3"),
