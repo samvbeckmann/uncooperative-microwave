@@ -35,16 +35,24 @@ public class StrategyPolicyIteration implements Strategy
             unchanged = true;
             for (State state : states)
             {
-                float maxExpectedUtility = AlgorithmHelper.getMaxExpectedUtility(utilities, state);
-                float currentExpectedUtility = AlgorithmHelper.getExpectedUtility(utilities, state, policy.getActionAtState(state)).getUtility();
+                Action maxUtilAction = AlgorithmHelper.getArgMaxExpectedUtility(utilities, state);
 
-                if (maxExpectedUtility < currentExpectedUtility)
+                if (maxUtilAction != policy.getActionAtState(state))
                 {
-                    policy.updatePolicy(state, AlgorithmHelper.getArgMaxExpectedUtility(utilities, state));
+                    policy.updatePolicy(state, maxUtilAction);
                     unchanged = false;
                 }
+
+//                float maxExpectedUtility = AlgorithmHelper.getMaxExpectedUtility(utilities, state);
+//                float currentExpectedUtility = AlgorithmHelper.getExpectedUtility(utilities, state, policy.getActionAtState(state)).getUtility();
+//
+//                if (maxExpectedUtility > currentExpectedUtility)
+//                {
+//                    policy.updatePolicy(state, AlgorithmHelper.getArgMaxExpectedUtility(utilities, state));
+//                    unchanged = false;
+//                }
             }
-        } while (unchanged);
+        } while (!unchanged);
 
 
         return policy;
