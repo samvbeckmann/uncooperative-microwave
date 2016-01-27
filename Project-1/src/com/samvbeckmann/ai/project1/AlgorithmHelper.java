@@ -7,7 +7,7 @@ import java.util.Map;
  *
  * @author Sam Beckmann
  */
-public final class AlgorithmHelper
+final class AlgorithmHelper
 {
     /**
      * Generates a policy when given a utility for each state.

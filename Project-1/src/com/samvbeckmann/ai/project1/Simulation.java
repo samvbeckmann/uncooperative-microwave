@@ -13,7 +13,7 @@ public class Simulation
     private State currentState;
     private Policy policy;
     private float netReward = 0;
-    Random rnd = new Random();
+    private Random rnd = new Random();
 
     public Simulation(State startingState, Policy policy)
     {

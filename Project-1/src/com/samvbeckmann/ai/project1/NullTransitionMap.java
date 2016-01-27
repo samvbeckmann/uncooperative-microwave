@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class NullTransitionMap implements TransitionMap
 {
-    Map<State, Float> transitionMap;
+    private Map<State, Float> transitionMap;
 
 
     public NullTransitionMap(State state)

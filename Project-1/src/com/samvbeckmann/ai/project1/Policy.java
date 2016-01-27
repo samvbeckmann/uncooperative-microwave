@@ -61,4 +61,15 @@ public class Policy
 
         return true;
     }
+
+    @Override
+    public String toString()
+    {
+        String str = "";
+
+        for (State state : actionMap.keySet()) // TODO: clean up this call.
+            str += state.toString() + " --> " + actionMap.get(state).toString() + "\n";
+
+        return str;
+    }
 }
