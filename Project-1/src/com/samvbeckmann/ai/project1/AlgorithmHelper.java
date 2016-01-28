@@ -77,9 +77,31 @@ final class AlgorithmHelper
         Map<State, Float> possibleFutureStates = currentState.getPossibleOutcomes(action);
 
         for (State nextState : possibleFutureStates.keySet()) // Sum expected utility over possibilities
+        {
+            assert nextState != null : String.format("State %s has a null possible outcome", currentState);
             actionUtil += possibleFutureStates.get(nextState) * utilityMap.get(nextState);
 
-        return new ExpectedUtility(action, actionUtil);
+        }
 
+        return new ExpectedUtility(action, actionUtil);
+    }
+
+    public static char getCharFromAction(Action action)
+    {
+        if (action == null)
+            return ' ';
+        switch (action)
+        {
+            case UP:
+                return '^';
+            case RIGHT:
+                return '>';
+            case DOWN:
+                return 'v';
+            case LEFT:
+                return '<';
+            default:
+                return ' ';
+        }
     }
 }

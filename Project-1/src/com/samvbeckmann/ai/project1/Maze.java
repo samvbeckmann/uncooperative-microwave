@@ -17,4 +17,13 @@ public interface Maze
      * @return the starting state for a simulation of the maze.
      */
     State getStartingState();
+
+    /**
+     * Generate an ascii representation of the policy for quick
+     * visualization.
+     *
+     * @param policy Policy to be visualized.
+     * @return Formatted string for visualization.
+     */
+    String visualizePolicy(Policy policy);
 }

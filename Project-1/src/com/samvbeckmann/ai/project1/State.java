@@ -68,7 +68,7 @@ public class State
 
         } catch (Exception e)
         {
-            System.err.print("State " + id + "not initialized!");
+            System.err.println("State " + id + " not initialized!\n");
             transitionTable = null;
         }
 

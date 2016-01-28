@@ -234,7 +234,7 @@ public class WumpusWorld implements Maze
                 stateIDMap.get("4-2-2"), // RIGHT
                 stateIDMap.get("3-1-2"), // DOWN
                 stateIDMap.get("2-2-2"))); // LEFT
-        stateIDMap.get("3-3-1").setTransitions(new SimpleTransitionMap(
+        stateIDMap.get("3-3-2").setTransitions(new SimpleTransitionMap(
                 stateIDMap.get("3-4-2"), // UP
                 stateIDMap.get("4-3-2"), // RIGHT
                 stateIDMap.get("3-2-2"), // DOWN
@@ -269,7 +269,7 @@ public class WumpusWorld implements Maze
         /*
          Transitions for level 3
          */
-        stateIDMap.get("1-2-1").setTransitions(new SimpleTransitionMap(
+        stateIDMap.get("1-2-3").setTransitions(new SimpleTransitionMap(
                 stateIDMap.get("wumpus"), // UP
                 stateIDMap.get("2-2-3"), // RIGHT
                 stateIDMap.get("terminal"), // DOWN
@@ -283,7 +283,7 @@ public class WumpusWorld implements Maze
                 stateIDMap.get("2-2-3"), // UP
                 stateIDMap.get("3-1-3"), // RIGHT
                 stateIDMap.get("2-1-3"), // DOWN
-                stateIDMap.get("1-1-3"))); // LEFT
+                stateIDMap.get("terminal"))); // LEFT
         stateIDMap.get("2-2-3").setTransitions(new SimpleTransitionMap(
                 stateIDMap.get("2-3-3"), // UP
                 stateIDMap.get("3-2-3"), // RIGHT
@@ -341,13 +341,13 @@ public class WumpusWorld implements Maze
         stateIDMap.get("1-2-4").setTransitions(new SimpleTransitionMap(
                 stateIDMap.get("1-3-4"), // UP
                 stateIDMap.get("2-2-4"), // RIGHT
-                stateIDMap.get("1-1-4"), // DOWN
+                stateIDMap.get("terminal"), // DOWN
                 stateIDMap.get("1-2-4"))); // LEFT
         stateIDMap.get("1-3-4").setTransitions(new SimpleTransitionMap(
                 stateIDMap.get("1-4-4"), // UP
-                stateIDMap.get("2-2-4"), // RIGHT
-                stateIDMap.get("1-1-4"), // DOWN
-                stateIDMap.get("1-2-4"))); // LEFT
+                stateIDMap.get("2-3-4"), // RIGHT
+                stateIDMap.get("1-2-4"), // DOWN
+                stateIDMap.get("1-3-4"))); // LEFT
         stateIDMap.get("1-4-4").setTransitions(new SimpleTransitionMap(
                 stateIDMap.get("1-4-4"), // UP
                 stateIDMap.get("2-4-4"), // RIGHT
@@ -357,7 +357,7 @@ public class WumpusWorld implements Maze
                 stateIDMap.get("2-2-4"), // UP
                 stateIDMap.get("3-1-4"), // RIGHT
                 stateIDMap.get("2-1-4"), // DOWN
-                stateIDMap.get("1-1-4"))); // LEFT
+                stateIDMap.get("terminal"))); // LEFT
         stateIDMap.get("2-2-4").setTransitions(new SimpleTransitionMap(
                 stateIDMap.get("2-3-4"), // UP
                 stateIDMap.get("3-2-4"), // RIGHT
@@ -398,7 +398,7 @@ public class WumpusWorld implements Maze
                 stateIDMap.get("4-1-4"), // RIGHT
                 stateIDMap.get("4-1-4"), // DOWN
                 stateIDMap.get("3-1-4"))); // LEFT
-        stateIDMap.get("4-2-2").setTransitions(new SimpleTransitionMap(
+        stateIDMap.get("4-2-4").setTransitions(new SimpleTransitionMap(
                 stateIDMap.get("4-3-2"), // UP
                 stateIDMap.get("4-2-2"), // RIGHT
                 stateIDMap.get("4-1-2"), // DOWN
@@ -426,5 +426,26 @@ public class WumpusWorld implements Maze
     public State getStartingState()
     {
         return stateIDMap.get("1-1-1");
+    }
+
+    @Override
+    public String visualizePolicy(Policy policy)
+    {
+        String str = "";
+        for (int z = 4; z > 0; z--)
+        {
+            for (int y = 4; y > 0; y--)
+            {
+                str += "---------\n";
+                for (int x = 1; x <= 4; x++)
+                {
+                    str += "|" + AlgorithmHelper.getCharFromAction(
+                            policy.getActionAtState(stateIDMap.get(String.format("%d-%d-%d", x, y, z))));
+                }
+                str += "|\n";
+            }
+            str += "---------\n\n";
+        }
+        return str;
     }
 }

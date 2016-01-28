@@ -101,4 +101,21 @@ public class ExampleMaze implements Maze
     {
         return stateIDMap.get("1-1");
     }
+
+    @Override
+    public String visualizePolicy(Policy policy)
+    {
+        String str = "";
+        for (int y = 3; y > 0;  y--)
+        {
+            str += "---------\n";
+            for (int x = 1; x <= 4; x++)
+            {
+                str += "|" + AlgorithmHelper.getCharFromAction(policy.getActionAtState(stateIDMap.get(String.format("%d-%d", x, y))));
+            }
+            str += "|\n";
+        }
+        str += "---------\n";
+        return str;
+    }
 }

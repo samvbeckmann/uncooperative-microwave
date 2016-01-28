@@ -53,7 +53,7 @@ public class Policy
      * @param states List of states in the world
      * @return true iff all states are in the policy.
      */
-    boolean verifyPolicy(List<State> states)
+    boolean verifyPolicy(List<State> states) // TODO bugged.
     {
         for (State state : states)
             if (actionMap.get(state) == null)
@@ -67,8 +67,8 @@ public class Policy
     {
         String str = "";
 
-        for (State state : actionMap.keySet()) // TODO: clean up this call.
-            str += state.toString() + " --> " + actionMap.get(state).toString() + "\n";
+        for (State state : actionMap.keySet())
+            str += String .format("%s --> %s\n", state.toString(), actionMap.get(state).toString());
 
         return str;
     }
