@@ -41,7 +41,8 @@ public class StrategyValueIteration implements Strategy
                 delta = Math.max(delta, stateDelta);
             }
 
-            currentUtilities = nextUtilities;
+            for (State state : nextUtilities.keySet())
+                currentUtilities.put(state, nextUtilities.get(state));
 
         } while (delta > (epsilon * (1 - discount) / discount));
 

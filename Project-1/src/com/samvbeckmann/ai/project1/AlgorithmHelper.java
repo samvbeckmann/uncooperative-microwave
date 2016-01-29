@@ -60,12 +60,12 @@ final class AlgorithmHelper
      */
     private static ExpectedUtility getBestExpectedUtility(Map<State, Float> utilityMap, State currentState)
     {
-        ExpectedUtility currentBestExpUtil = new ExpectedUtility(Action.UP, 0);
+        ExpectedUtility currentBestExpUtil = new ExpectedUtility(Action.UP, -Float.MAX_VALUE);
         for (Action action : Action.values())
         {
             ExpectedUtility actionExpUtil = getExpectedUtility(utilityMap, currentState, action);
 
-            if (actionExpUtil.getUtility() > currentBestExpUtil.getUtility())
+            if (actionExpUtil.compareTo(currentBestExpUtil) > 0)
                 currentBestExpUtil = actionExpUtil;
         }
         return currentBestExpUtil;

@@ -40,6 +40,7 @@ public class ExampleMaze implements Maze
         stateIDMap.put("4-3", new State("4-3", terminationReward, true));
         stateIDMap.put("4-2", new State("4-2", terminationPunishment, true));
         stateIDMap.put("4-1", new State("4-1", stepCost, false));
+        stateIDMap.put("terminal", new State("terminal", 0, true));
 
         stateIDMap.get("1-3").setTransitions(new SimpleTransitionMap(
                 stateIDMap.get("1-3"),
@@ -81,13 +82,14 @@ public class ExampleMaze implements Maze
                 stateIDMap.get("4-1"),
                 stateIDMap.get("3-1"),
                 stateIDMap.get("2-1")));
-        stateIDMap.get("4-3").setTransitions(new NullTransitionMap(stateIDMap.get("4-3")));
-        stateIDMap.get("4-2").setTransitions(new NullTransitionMap(stateIDMap.get("4-2")));
+        stateIDMap.get("4-3").setTransitions(new NullTransitionMap(stateIDMap.get("terminal")));
+        stateIDMap.get("4-2").setTransitions(new NullTransitionMap(stateIDMap.get("terminal")));
         stateIDMap.get("4-1").setTransitions(new SimpleTransitionMap(
                 stateIDMap.get("4-2"),
                 stateIDMap.get("4-1"),
                 stateIDMap.get("4-1"),
                 stateIDMap.get("3-1")));
+        stateIDMap.get("terminal").setTransitions(new NullTransitionMap(stateIDMap.get("terminal")));
 
         List<State> states = new ArrayList<>(stateIDMap.size());
 

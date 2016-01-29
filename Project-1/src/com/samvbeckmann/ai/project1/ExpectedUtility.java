@@ -6,7 +6,7 @@ package com.samvbeckmann.ai.project1;
  *
  * @author Sam Beckmann
  */
-public class ExpectedUtility
+public class ExpectedUtility implements Comparable<ExpectedUtility>
 {
     private Action action;
     private float utility;
@@ -35,5 +35,16 @@ public class ExpectedUtility
     public void setUtility(float utility)
     {
         this.utility = utility;
+    }
+
+    @Override
+    public int compareTo(ExpectedUtility o)
+    {
+        if (this.getUtility() == o.getUtility())
+            return 0;
+        else if(this.getUtility() > o.getUtility())
+            return 1;
+        else
+            return -1;
     }
 }

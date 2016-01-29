@@ -9,12 +9,12 @@ public class Runner
 
     public static void main(String[] args)
     {
-//        Maze maze = new ExampleMaze(-0.04F, 1, -1);
-        Maze maze = new WumpusWorld(-.04F, -0.5F, -0.5F, -0.5F, -3F, 3F);
+//        Maze maze = new ExampleMaze(-.04F, 1, -1);
+        Maze maze = new WumpusWorld(-.04F, -0.5F, -0.5F, -0.5F, -10F, 10F);
 
-        Policy policy = new StrategyValueIteration(0.7F, 0.001F).generatePolicy(maze.getStates());
+//        Policy policy = new StrategyValueIteration(0.95F, 0.001F).generatePolicy(maze.getStates());
 
-//        Policy policy = new StrategyPolicyIteration(0.7F).generatePolicy(maze.getStates());
+        Policy policy = new StrategyPolicyIteration(1F).generatePolicy(maze.getStates());
 
 //        assert policy.verifyPolicy(maze.getStates()) : "Policy not valid.";
 
