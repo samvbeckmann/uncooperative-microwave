@@ -15,8 +15,9 @@ public class Runner
 
     public static void main(String[] args)
     {
-        Policy policy = null;
         Maze maze = null;
+        Policy policyValueIteration = null;
+        Policy policyPolicyIteration = null;
 
         try
         {
@@ -52,46 +53,54 @@ public class Runner
                     throw new InvalidFileFormatException("Maze type not supported!");
             }
 
-            String strategyType = br.readLine();
             Float discount = Float.parseFloat(br.readLine());
 
-            switch (strategyType)
-            {
-                case "valueIteration":
-                    policy = constructAndReportPolicy(new StrategyValueIteration(discount, VALUE_EPSILON), maze);
-                    break;
-                case "policyIteration":
-                    policy = constructAndReportPolicy(new StrategyPolicyIteration(discount), maze);
-                    break;
-                default:
-                    throw new InvalidFileFormatException("Strategy type not supported!");
-            }
+            policyValueIteration = constructAndReportPolicy(new StrategyValueIteration(discount, VALUE_EPSILON), maze);
+            policyPolicyIteration = constructAndReportPolicy(new StrategyPolicyIteration(discount), maze);
+            System.out.println();
 
         } catch (Exception e)
         {
             System.err.println(e.getMessage());
         }
 
-//        assert policy.verifyPolicy(maze.getStates()) : "Policy not valid.";
-
-        if(maze == null || policy == null)
+        if(maze == null)
         {
-            System.err.println("Maze or Policy not properly Initialized! Exiting...");
+            System.err.println("Maze not properly Initialized! Exiting...");
             System.exit(13);
         }
 
-        System.out.println(maze.visualizePolicy(policy));
+        String policyIterationViz = maze.visualizePolicy(policyPolicyIteration);
+        String valueIterationViz = maze.visualizePolicy(policyValueIteration);
 
-        float totalReward = 0;
-        for (int i = 0; i < NUM_TESTS; i++)
+        if(!policyIterationViz.equals(valueIterationViz))
         {
-            Simulation sampleSimulation = new Simulation(maze.getStartingState(), policy);
-            totalReward += sampleSimulation.performSimulation();
+            System.out.println("Warning! Policies are not equivalent.\n");
         }
 
-        float netReward = totalReward / NUM_TESTS;
+        assert policyPolicyIteration != null;
+        assert policyPolicyIteration.verifyPolicy(maze.getStates()) : "Policy not valid.";
+        assert policyValueIteration != null;
+        assert policyValueIteration.verifyPolicy(maze.getStates()) : "Policy not valid";
 
-        System.out.println(netReward);
+        System.out.println("Value Iteration Policy:\n\n" + valueIterationViz);
+        System.out.println("Policy Iteration Policy:\n\n" + policyIterationViz);
+
+        float totalRewardPolicy = 0;
+        float totalRewardValue = 0;
+        for (int i = 0; i < NUM_TESTS; i++)
+        {
+            Simulation policySimulation = new Simulation(maze.getStartingState(), policyValueIteration);
+            Simulation valueSimulation = new Simulation(maze.getStartingState(), policyValueIteration);
+            totalRewardPolicy += policySimulation.performSimulation();
+            totalRewardValue += valueSimulation.performSimulation();
+        }
+
+        float netRewardPolicy = totalRewardPolicy / NUM_TESTS;
+        float netRewardValue = totalRewardValue / NUM_TESTS;
+
+        System.out.println("Average reward for Policy Iteration: " + netRewardPolicy);
+        System.out.println("Average reward for Value Iteration:  " + netRewardValue);
     }
 
     private static Policy constructAndReportPolicy(Strategy strategy, Maze maze)
@@ -101,7 +110,8 @@ public class Runner
         long finalTime = System.currentTimeMillis();
         long netTime = finalTime - initTime;
 
-        System.out.printf("Constructed policy in %d milliseconds.\n\n", netTime);
+        // TODO: Timing incorrect.
+//        System.out.printf("Constructed policy using %s in %d milliseconds.\n", strategy.getName(), netTime);
         return policy;
     }
 }

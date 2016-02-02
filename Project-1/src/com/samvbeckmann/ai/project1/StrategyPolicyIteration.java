@@ -48,6 +48,12 @@ public class StrategyPolicyIteration implements Strategy
         return policy;
     }
 
+    @Override
+    public String getName()
+    {
+        return "Policy Iteration";
+    }
+
     private Map<State, Float> evaluatePolicy(Policy policy, List<State> states, Map<State, Float> prevUtilities)
     {
         Map<State, Float> utilityMap = new HashMap<>();

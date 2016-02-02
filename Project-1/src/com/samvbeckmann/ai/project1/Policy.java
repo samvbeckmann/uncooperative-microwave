@@ -11,11 +11,13 @@ import java.util.Map;
  */
 public class Policy
 {
-    private Map<State, Action> actionMap;
+    private Map<String, Action> actionMap;
 
     public Policy(Map<State, Action> actionMap)
     {
-        this.actionMap = actionMap;
+        this.actionMap = new HashMap<>();
+        for (State state: actionMap.keySet())
+            this.actionMap.put(state.toString(), actionMap.get(state));
     }
 
     public Policy()
@@ -30,9 +32,14 @@ public class Policy
      * @param state State to look up action for.
      * @return Action to be taken at given state according to this policy.
      */
-    Action getActionAtState(State state)
+    public Action getActionAtState(State state)
     {
-        return actionMap.get(state);
+        return actionMap.get(state.toString());
+    }
+
+    public Action getActionFromID(String id)
+    {
+        return actionMap.get(id);
     }
 
     /**
@@ -44,7 +51,7 @@ public class Policy
      */
     void updatePolicy(State state, Action action)
     {
-        actionMap.put(state, action);
+        actionMap.put(state.toString(), action);
     }
 
     /**
@@ -56,7 +63,7 @@ public class Policy
     boolean verifyPolicy(List<State> states) // TODO bugged.
     {
         for (State state : states)
-            if (actionMap.get(state) == null)
+            if (actionMap.get(state.toString()) == null)
                 return false;
 
         return true;
@@ -67,8 +74,8 @@ public class Policy
     {
         String str = "";
 
-        for (State state : actionMap.keySet())
-            str += String .format("%s --> %s\n", state.toString(), actionMap.get(state).toString());
+        for (String state : actionMap.keySet())
+            str += String .format("%s --> %s\n", state, actionMap.get(state).toString());
 
         return str;
     }

@@ -18,4 +18,9 @@ public interface Strategy
      * @return A Policy determined for the given world.
      */
     Policy generatePolicy(List<State> states);
+
+    /**
+     * @return String name of this Strategy.
+     */
+    String getName();
 }

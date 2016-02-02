@@ -94,7 +94,7 @@ public class WumpusWorld implements Maze
         stateIDMap.put("2-1-4", new State("2-1-4", stepCost, false));
         stateIDMap.put("2-2-4", new State("2-2-4", stepCost, false));
         stateIDMap.put("2-3-4", new State("2-3-4", pit1Cost, false));
-        stateIDMap.put("2-4-4", new State("2-4-4", pit1Cost, false));
+        stateIDMap.put("2-4-4", new State("2-4-4", stepCost, false));
         stateIDMap.put("3-1-4", new State("3-1-4", pit3Cost, false));
         stateIDMap.put("3-2-4", new State("3-2-4", stepCost, false));
         stateIDMap.put("3-3-4", new State("3-3-4", pit2Cost, false));
@@ -442,11 +442,11 @@ public class WumpusWorld implements Maze
                 for (int x = 1; x <= 4; x++)
                 {
                     str += "|" + AlgorithmHelper.getCharFromAction(
-                            policy.getActionAtState(stateIDMap.get(String.format("%d-%d-%d", x, y, z))));
+                            policy.getActionFromID(String.format("%d-%d-%d", x, y, z)));
                 }
                 str += "|\n";
             }
-            str += "---------\n\n";
+            str += "---------\n";
         }
         return str;
     }

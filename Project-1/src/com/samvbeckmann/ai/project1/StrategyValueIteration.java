@@ -50,6 +50,12 @@ public class StrategyValueIteration implements Strategy
         return AlgorithmHelper.getPolicyFromUtilities(currentUtilities);
     }
 
+    @Override
+    public String getName()
+    {
+        return "Value Iteration";
+    }
+
     public float getDiscount()
     {
         return discount;
