@@ -64,7 +64,7 @@ public class Runner
                     policy = constructAndReportPolicy(new StrategyPolicyIteration(discount), maze);
                     break;
                 default:
-                    throw new InvalidFileFormatException("Strategy yype not supported!");
+                    throw new InvalidFileFormatException("Strategy type not supported!");
             }
 
         } catch (Exception e)
