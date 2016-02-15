@@ -90,7 +90,7 @@ public class Runner
         float totalRewardValue = 0;
         for (int i = 0; i < NUM_TESTS; i++)
         {
-            Simulation policySimulation = new Simulation(maze.getStartingState(), policyValueIteration);
+            Simulation policySimulation = new Simulation(maze.getStartingState(), policyPolicyIteration);
             Simulation valueSimulation = new Simulation(maze.getStartingState(), policyValueIteration);
             totalRewardPolicy += policySimulation.performSimulation();
             totalRewardValue += valueSimulation.performSimulation();
