@@ -12,7 +12,7 @@ public class Simulation
 {
     private State currentState;
     private Policy policy;
-    private float netReward = 0;
+    private double netReward = 0;
     private Random rnd = new Random();
 
     public Simulation(State startingState, Policy policy)
@@ -26,7 +26,7 @@ public class Simulation
      *
      * @return net reward from the simulation.
      */
-    public float performSimulation()
+    public double performSimulation()
     {
         try
         {
@@ -38,7 +38,7 @@ public class Simulation
             }
         } catch (InvalidTransitionTableException e)
         {
-            Map<State, Float> transitionTable = currentState.getPossibleOutcomes(policy.getActionAtState(currentState));
+            Map<State, Double> transitionTable = currentState.getPossibleOutcomes(policy.getActionAtState(currentState));
             for (State state : transitionTable.keySet())
                 System.err.println(state + " -> " + transitionTable.get(state));
 
@@ -65,9 +65,9 @@ public class Simulation
      * @return State which is the actual outcome of the transition table.
      * @throws InvalidTransitionTableException if transition table probabilities don't sum to 1.
      */
-    private State getActualOutcome(Map<State, Float> transition) throws InvalidTransitionTableException
+    private State getActualOutcome(Map<State, Double> transition) throws InvalidTransitionTableException
     {
-        float rollResult = rnd.nextFloat();
+        double rollResult = rnd.nextDouble();
 
         for(State potentialState : transition.keySet())
         {

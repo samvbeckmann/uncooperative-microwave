@@ -9,9 +9,9 @@ package com.samvbeckmann.ai.project1;
 public class ExpectedUtility implements Comparable<ExpectedUtility>
 {
     private Action action;
-    private float utility;
+    private double utility;
 
-    public ExpectedUtility(Action action, float utility)
+    public ExpectedUtility(Action action, double utility)
     {
         this.action = action;
         this.utility = utility;
@@ -22,7 +22,7 @@ public class ExpectedUtility implements Comparable<ExpectedUtility>
         return action;
     }
 
-    public float getUtility()
+    public double getUtility()
     {
         return utility;
     }
@@ -32,7 +32,7 @@ public class ExpectedUtility implements Comparable<ExpectedUtility>
         this.action = action;
     }
 
-    public void setUtility(float utility)
+    public void setUtility(double utility)
     {
         this.utility = utility;
     }

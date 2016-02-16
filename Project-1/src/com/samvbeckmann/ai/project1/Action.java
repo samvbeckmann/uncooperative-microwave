@@ -12,6 +12,7 @@ import java.util.Random;
  *
  * @author Sam Beckmann
  */
+@SuppressWarnings("Duplicates")
 public enum Action
 {
     UP, RIGHT, DOWN, LEFT;
@@ -24,5 +25,39 @@ public enum Action
     public static Action randomAction()
     {
         return VALUES.get(RANDOM.nextInt(SIZE));
+    }
+
+    public static Action transformRight(Action action)
+    {
+        switch (action)
+        {
+            case UP:
+                return RIGHT;
+            case RIGHT:
+                return DOWN;
+            case DOWN:
+                return LEFT;
+            case LEFT:
+                return UP;
+            default:
+                return action;
+        }
+    }
+
+    public static Action transformLeft(Action action)
+    {
+        switch (action)
+        {
+            case UP:
+                return LEFT;
+            case RIGHT:
+                return UP;
+            case DOWN:
+                return RIGHT;
+            case LEFT:
+                return DOWN;
+            default:
+                return action;
+        }
     }
 }

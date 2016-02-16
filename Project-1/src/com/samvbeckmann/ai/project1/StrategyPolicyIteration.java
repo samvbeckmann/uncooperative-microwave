@@ -9,9 +9,9 @@ import java.util.Map;
  */
 public class StrategyPolicyIteration implements Strategy
 {
-    private float discount;
+    private double discount;
 
-    public StrategyPolicyIteration(float discount)
+    public StrategyPolicyIteration(double discount)
     {
         this.discount = discount;
     }
@@ -19,12 +19,12 @@ public class StrategyPolicyIteration implements Strategy
     @Override
     public Policy generatePolicy(List<State> states)
     {
-        Map<State, Float> utilities = new HashMap<>();
+        Map<State, Double> utilities = new HashMap<>();
         Policy policy = new Policy();
 
         for(State state : states)
         {
-            utilities.put(state, 0F);
+            utilities.put(state, 0D);
             policy.updatePolicy(state, Action.randomAction());
         }
 
@@ -54,14 +54,14 @@ public class StrategyPolicyIteration implements Strategy
         return "Policy Iteration";
     }
 
-    private Map<State, Float> evaluatePolicy(Policy policy, List<State> states, Map<State, Float> prevUtilities)
+    private Map<State, Double> evaluatePolicy(Policy policy, List<State> states, Map<State, Double> prevUtilities)
     {
-        Map<State, Float> utilityMap = new HashMap<>();
+        Map<State, Double> utilityMap = new HashMap<>();
 
         for (State state: states)
         {
-            float expectedUtility = AlgorithmHelper.getExpectedUtility(prevUtilities, state, policy.getActionAtState(state)).getUtility();
-            float stateUtility = state.getReward() + discount * expectedUtility;
+            double expectedUtility = AlgorithmHelper.getExpectedUtility(prevUtilities, state, policy.getActionAtState(state)).getUtility();
+            double stateUtility = state.getReward() + discount * expectedUtility;
             utilityMap.put(state, stateUtility);
         }
 

@@ -8,17 +8,17 @@ import java.util.Map;
  */
 public class NullTransitionMap implements TransitionMap
 {
-    private Map<State, Float> transitionMap;
+    private Map<State, Double> transitionMap;
 
 
     public NullTransitionMap(State state)
     {
         transitionMap = new HashMap<>();
-        transitionMap.put(state, 1.0F);
+        transitionMap.put(state, 1.0);
     }
 
     @Override
-    public Map<State, Float> getTransitionTableFromAction(Action action)
+    public Map<State, Double> getTransitionTableFromAction(Action action)
     {
         return transitionMap;
     }

@@ -12,19 +12,19 @@ import java.util.stream.Collectors;
 public class WumpusWorld implements Maze
 {
     private Map<String, State> stateIDMap;
-    private float stepCost;
-    private float pit1Cost;
-    private float pit2Cost;
-    private float pit3Cost;
-    private float wumpusCost;
-    private float successCost;
+    private double stepCost;
+    private double pit1Cost;
+    private double pit2Cost;
+    private double pit3Cost;
+    private double wumpusCost;
+    private double successCost;
 
-    public WumpusWorld(float stepCost,
-                       float pit1Cost,
-                       float pit2Cost,
-                       float pit3Cost,
-                       float wumpusCost,
-                       float successCost)
+    public WumpusWorld(double stepCost,
+                       double pit1Cost,
+                       double pit2Cost,
+                       double pit3Cost,
+                       double wumpusCost,
+                       double successCost)
     {
         this.stepCost = stepCost;
         this.pit1Cost = pit1Cost;
