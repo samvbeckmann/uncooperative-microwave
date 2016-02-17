@@ -22,4 +22,6 @@ public interface World
     Coordinate getLowerLeftCoordinate();
 
     List<Feature> getFeaturesAtCoordinate(Coordinate coordinate);
+
+    void setFeatures(FeatureSet features);
 }

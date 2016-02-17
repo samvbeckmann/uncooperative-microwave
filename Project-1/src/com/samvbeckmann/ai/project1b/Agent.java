@@ -117,6 +117,8 @@ public class Agent
             else
                 nextLocation = transitions.getNewCoordinate(location, nextAction);
 
+            nextLocation = world.normalizeCoordinate(nextLocation);
+
             List<Feature> nextFeatures = world.getFeaturesAtCoordinate(nextLocation);
             Double qValue = sumUtilitiesOfFeatures(nextFeatures);
 

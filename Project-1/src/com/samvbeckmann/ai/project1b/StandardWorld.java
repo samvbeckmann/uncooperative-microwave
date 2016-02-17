@@ -17,12 +17,12 @@ public class StandardWorld implements World
     @Override
     public Coordinate normalizeCoordinate(Coordinate coordinate)
     {
-        double adjustedX = Math.max(coordinate.getX(), 10);
-        adjustedX = Math.min(adjustedX, 0);
+        double adjustedX = Math.min(coordinate.getX(), 10);
+        adjustedX = Math.max(adjustedX, 0);
         coordinate.setX(adjustedX);
 
-        double adjustedY = Math.max(coordinate.getY(), 10);
-        adjustedY = Math.min(adjustedY, 0);
+        double adjustedY = Math.min(coordinate.getY(), 10);
+        adjustedY = Math.max(adjustedY, 0);
         coordinate.setY(adjustedY);
 
         return coordinate;

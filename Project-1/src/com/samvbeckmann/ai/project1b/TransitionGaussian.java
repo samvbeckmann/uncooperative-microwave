@@ -28,8 +28,8 @@ public class TransitionGaussian implements TransitionModel
         angle += offsetAngleFromAction(action);
         double magnitude = meanMagnitude + rnd.nextGaussian() * sdMagnitude;
 
-        double y = Math.sin(angle) * magnitude;
-        double x = Math.cos(angle) * magnitude;
+        double y = Math.sin(Math.toRadians(angle)) * magnitude;
+        double x = Math.cos(Math.toRadians(angle)) * magnitude;
 
         return current.offsetCoordinate(x, y);
     }
@@ -37,7 +37,11 @@ public class TransitionGaussian implements TransitionModel
     @Override
     public Coordinate getAverageTransition(Coordinate current, Action action)
     {
-        return null;
+        double angle = offsetAngleFromAction(action);
+        double y = Math.sin(Math.toRadians(angle)) * meanMagnitude;
+        double x = Math.sin(Math.toRadians(angle)) * meanMagnitude;
+
+        return current.offsetCoordinate(x, y);
     }
 
     private double offsetAngleFromAction(Action action) // TODO: Move to action
