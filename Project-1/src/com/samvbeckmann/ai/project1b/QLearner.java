@@ -14,7 +14,7 @@ import java.util.Random;
  *
  * @author Sam Beckmann
  */
-public class Agent
+public class QLearner
 {
     private Map<Feature, Double> utilities;
     private World world;
@@ -22,34 +22,43 @@ public class Agent
     private double discount;
     private double epsilon;
     private double lambda;
+    private double learningRate;
     private Random rnd = new Random();
 
-    public Agent(World world, TransitionModel transitions, double discount, double epsilon, double lambda)
+    public QLearner(World world, TransitionModel transitions, double discount, double epsilon, double lambda, double learningRate)
     {
         this.world = world;
         this.transitions = transitions;
         this.discount = discount;
         this.epsilon = epsilon;
         this.lambda = lambda;
+        this.learningRate = learningRate;
         utilities = new HashMap<>();
     }
 
-    public double performEpisode(double learningRate)
+    /**
+     * Perform a full episode in the world,
+     * until a terminal state is reached.
+     * Update utilities for features with new knowledge.
+     *
+     * @return Reward for this episode
+     */
+    public double performEpisode()
     {
         double totalReward = 0;
         Coordinate position = world.getStartingPosition();
-        Action action = Action.randomAction();
+        Action action = Action.randomAction(); // TODO: Change, to remove all randomness
         Map<Feature, Double> eligibility = new HashMap<>();
 
         while (!world.isTerminal(position))
         {
-            List<Feature> currentFeatures = world.getFeaturesAtCoordinate(position);
+            List<Feature> currentFeatures = world.getActiveFeatures(position, action);
             for (Feature feature : currentFeatures)
             {
                 Double eValue = eligibility.get(feature);
                 if (eValue == null)
                     eValue = 0D;
-                eligibility.put(feature, eValue + 1);
+                eligibility.put(feature, ++eValue);
             }
 
             position = world.normalizeCoordinate(transitions.getNewCoordinate(position, action));
@@ -58,7 +67,7 @@ public class Agent
 
             double delta = lastReward - sumUtilitiesOfFeatures(currentFeatures);
 
-            double maximumQValue = getMaxExpectedUtility(position, true).getUtility();
+            double maximumQValue = getMaxExpectedUtility(position).getUtility();
 
             delta += discount * maximumQValue;
 
@@ -67,13 +76,13 @@ public class Agent
                 Double featUtility = utilities.get(feature);
                 if (featUtility == null)
                     featUtility = 0D;
-                featUtility += learningRate * delta * eligibility.get(feature);
+                featUtility += delta * learningRate * eligibility.get(feature);
                 utilities.put(feature, featUtility);
             }
 
             if (rnd.nextDouble() > epsilon)
             {
-                action = getMaxExpectedUtility(position, true).getAction();
+                action = getMaxExpectedUtility(position).getAction();
 
                 for (Feature feature : eligibility.keySet())
                 {
@@ -92,6 +101,12 @@ public class Agent
         return totalReward;
     }
 
+    /**
+     * Sums up the utilities of a given list of features
+     *
+     * @param features whose utilities are to be summed
+     * @return Sum of all Feature utilities
+     */
     private double sumUtilitiesOfFeatures(List<Feature> features)
     {
         double result = 0;
@@ -105,21 +120,20 @@ public class Agent
         return result;
     }
 
-    public ExpectedUtility getMaxExpectedUtility(Coordinate location, boolean simulateMovement)
+    /**
+     * Return utility-action pair that maximizes expected utility
+     * from a given position, using one-step lookahead.
+     *
+     * @param location Position to maximize utility from
+     * @return ExpectedUtility with action and it's associated utility
+     */
+    public ExpectedUtility getMaxExpectedUtility(Coordinate location)
     {
         ExpectedUtility bestExpectedUtility = new ExpectedUtility(Action.UP, -Float.MAX_VALUE);
 
         for (Action nextAction : Action.values())
         {
-            Coordinate nextLocation;
-            if (simulateMovement)
-                nextLocation = transitions.getAverageTransition(location, nextAction);
-            else
-                nextLocation = transitions.getNewCoordinate(location, nextAction);
-
-            nextLocation = world.normalizeCoordinate(nextLocation);
-
-            List<Feature> nextFeatures = world.getFeaturesAtCoordinate(nextLocation);
+            List<Feature> nextFeatures = world.getActiveFeatures(location, nextAction);
             Double qValue = sumUtilitiesOfFeatures(nextFeatures);
 
             if (qValue > bestExpectedUtility.getUtility())

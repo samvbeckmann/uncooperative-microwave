@@ -1,15 +1,34 @@
 package com.samvbeckmann.ai.project1b;
 
+import com.samvbeckmann.ai.project1.Action;
+
 /**
- * Created by sam on 2/15/16.
+ * Defines a Feature in the state space.
+ * A Feature has an id, and an associated action.
+ * The action is for calculating Q-values.
+ *
+ * @author Sam Beckmann
  */
 public class Feature
 {
-    private String id;
+    /**
+     * ID associated with this feature.
+     * Features can share an id, so long
+     * as their actions are unique.
+     * ID's are immutable.
+     */
+    private final String id;
 
-    public Feature(String id)
+    /**
+     * Action associated with this feature.
+     * Actions are immutable.
+     */
+    final Action action;
+
+    public Feature(String id, Action action)
     {
         this.id = id;
+        this.action = action;
     }
 
     public String getId()
@@ -17,9 +36,9 @@ public class Feature
         return id;
     }
 
-    public void setId(String id)
+    public Action getAction()
     {
-        this.id = id;
+        return action;
     }
 
     @Override
@@ -29,8 +48,17 @@ public class Feature
         if (obj instanceof Feature)
         {
             Feature that = (Feature) obj;
-            return (id.equals(that.id));
+            return (id.equals(that.id) && action.equals(that.action));
         }
         return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = 31;
+        result *= id.hashCode();
+        result *= action.ordinal();
+        return result;
     }
 }

@@ -5,7 +5,9 @@ import com.samvbeckmann.ai.project1.Action;
 import java.util.Random;
 
 /**
- * Created by sam on 2/15/16.
+ * Discrete space TransitionModel, with probabilistic transitions.
+ *
+ * @author Sam Beckmann
  */
 public class TransitionDiscrete implements TransitionModel
 {
@@ -27,17 +29,18 @@ public class TransitionDiscrete implements TransitionModel
         if (rndNum <= mainProbability)
             return getCoordinateFromAction(current, action);
         else if (rndNum <= mainProbability + sideProbability)
-            return getCoordinateFromAction(current, Action.transformRight(action));
+            return getCoordinateFromAction(current, Action.transformClockwise(action));
         else
-            return getCoordinateFromAction(current, Action.transformLeft(action));
+            return getCoordinateFromAction(current, Action.transformCounterclockwise(action));
     }
 
-    @Override
-    public Coordinate getAverageTransition(Coordinate current, Action action)
-    {
-        return getCoordinateFromAction(current, action);
-    }
-
+    /**
+     * Transforms a coordinate and a direction into the next possible state.
+     *
+     * @param current Position before transformation
+     * @param action Direction in which to move
+     * @return Position after moving current in action's direction
+     */
     private Coordinate getCoordinateFromAction(Coordinate current, Action action)
     {
         switch (action)

@@ -1,11 +1,16 @@
 package com.samvbeckmann.ai.project1b;
 
+import com.samvbeckmann.ai.project1.Action;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 /**
- * Created by sam on 2/15/16.
+ * Implementation of Tile Coding features for
+ * continuous state spaces.
+ *
+ * @author Sam Beckmann
  */
 public class TileCoding implements FeatureSet
 {
@@ -36,7 +41,7 @@ public class TileCoding implements FeatureSet
 
 
     @Override
-    public List<Feature> getFeaturesAtCoordinate(Coordinate coordinate)
+    public List<Feature> getActiveFeatures(Coordinate coordinate, Action action)
     {
         List<Feature> features = new ArrayList<>(offsets.size());
         for (int i = 0; i < offsets.size(); i++)
@@ -46,7 +51,7 @@ public class TileCoding implements FeatureSet
             int row = (int) Math.floor(coordinate.getX() - offset.getX() / (xRange / xResolution));
             int col = (int) Math.floor(coordinate.getY() - offset.getY() / (yRange / yResolution));
 
-            features.add(FeatureFactory.createThreeValueFeature(row, col, i));
+            features.add(FeatureFactory.createThreeValueFeature(row, col, i, action));
         }
 
         return features;

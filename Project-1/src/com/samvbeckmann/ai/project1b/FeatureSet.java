@@ -1,5 +1,7 @@
 package com.samvbeckmann.ai.project1b;
 
+import com.samvbeckmann.ai.project1.Action;
+
 import java.util.List;
 
 /**
@@ -17,5 +19,5 @@ public interface FeatureSet
      * @param coordinate Position to get features from
      * @return List of active features
      */
-    List<Feature> getFeaturesAtCoordinate(Coordinate coordinate);
+    List<Feature> getActiveFeatures(Coordinate coordinate, Action action);
 }

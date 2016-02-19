@@ -1,14 +1,24 @@
 package com.samvbeckmann.ai.project1b;
 
+import com.samvbeckmann.ai.project1.Action;
+
 import java.util.List;
 
 /**
- * Created by sam on 2/15/16.
+ * Standard implementation of {@link StandardWorld}.
+ * 10x10 world starting in lower left and terminating
+ * in the upper right.
+ * Extend this example or make your own.
+ *
+ * @author Sam Beckmann
  */
 public class StandardWorld implements World
 {
     private FeatureSet features;
 
+    private final Coordinate LOWER_LEFT_COORD = new Coordinate(0, 0);
+
+    @Override
     public void setFeatures(FeatureSet features)
     {
         this.features = features;
@@ -40,13 +50,13 @@ public class StandardWorld implements World
     @Override
     public double getReward(Coordinate coordinate)
     {
-        return isTerminal(coordinate) ? 1 : -.04;
-    }
+        return isTerminal(coordinate) ? 0 : -1;
+    } // TODO: Allow tuning
 
     @Override
     public Coordinate getStartingPosition()
     {
-        return new Coordinate(0, 0);
+        return LOWER_LEFT_COORD;
     }
 
     @Override
@@ -64,12 +74,12 @@ public class StandardWorld implements World
     @Override
     public Coordinate getLowerLeftCoordinate()
     {
-        return new Coordinate(0, 0);
+        return LOWER_LEFT_COORD;
     }
 
     @Override
-    public List<Feature> getFeaturesAtCoordinate(Coordinate coordinate)
+    public List<Feature> getActiveFeatures(Coordinate coordinate, Action action)
     {
-        return features.getFeaturesAtCoordinate(coordinate);
+        return features.getActiveFeatures(coordinate, action);
     }
 }

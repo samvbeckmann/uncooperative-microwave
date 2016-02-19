@@ -5,7 +5,9 @@ import com.samvbeckmann.ai.project1.Action;
 import java.util.Random;
 
 /**
- * Created by sam on 2/15/16.
+ * Continuous space TransitionModel, with gaussian offsets.
+ *
+ * @author Sam Beckmann
  */
 public class TransitionGaussian implements TransitionModel
 {
@@ -25,39 +27,12 @@ public class TransitionGaussian implements TransitionModel
     public Coordinate getNewCoordinate(Coordinate current, Action action)
     {
         double angle = rnd.nextGaussian() * sdAngle;
-        angle += offsetAngleFromAction(action);
+        angle += Action.getOffsetAngle(action);
         double magnitude = meanMagnitude + rnd.nextGaussian() * sdMagnitude;
 
         double y = Math.sin(Math.toRadians(angle)) * magnitude;
         double x = Math.cos(Math.toRadians(angle)) * magnitude;
 
         return current.offsetCoordinate(x, y);
-    }
-
-    @Override
-    public Coordinate getAverageTransition(Coordinate current, Action action)
-    {
-        double angle = offsetAngleFromAction(action);
-        double y = Math.sin(Math.toRadians(angle)) * meanMagnitude;
-        double x = Math.sin(Math.toRadians(angle)) * meanMagnitude;
-
-        return current.offsetCoordinate(x, y);
-    }
-
-    private double offsetAngleFromAction(Action action) // TODO: Move to action
-    {
-        switch (action)
-        {
-            case UP:
-                return 90;
-            case RIGHT:
-                return 0;
-            case DOWN:
-                return 270;
-            case LEFT:
-                return 180;
-            default:
-                return 0; // TODO: Make into throwing an error
-        }
     }
 }

@@ -18,14 +18,4 @@ public interface TransitionModel
      * @return The next coordinate, using the actual transition model
      */
     Coordinate getNewCoordinate(Coordinate current, Action action);
-
-    /**
-     * Simulates a transition without using the actual calculation.
-     * Gets an "average" next state from the transition model.
-     *
-     * @param current Position before the transition
-     * @param action Action to take at the given position
-     * @return The next average position of the next coordinate
-     */
-    Coordinate getAverageTransition(Coordinate current, Action action);
 }

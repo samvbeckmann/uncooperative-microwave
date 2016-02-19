@@ -1,5 +1,7 @@
 package com.samvbeckmann.ai.project1b;
 
+import com.samvbeckmann.ai.project1.Action;
+
 import java.util.List;
 
 /**
@@ -70,7 +72,7 @@ public interface World
      * @param coordinate position to get features for
      * @return List of all features "activated" at the given position
      */
-    List<Feature> getFeaturesAtCoordinate(Coordinate coordinate);
+    List<Feature> getActiveFeatures(Coordinate coordinate, Action action);
 
     /**
      * Set the FeatureSet of the world.

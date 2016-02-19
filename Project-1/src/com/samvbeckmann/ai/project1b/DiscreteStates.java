@@ -1,5 +1,7 @@
 package com.samvbeckmann.ai.project1b;
 
+import com.samvbeckmann.ai.project1.Action;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +25,15 @@ public class DiscreteStates implements FeatureSet
     }
 
     @Override
-    public List<Feature> getFeaturesAtCoordinate(Coordinate coordinate)
+    public List<Feature> getActiveFeatures(Coordinate coordinate, Action action)
     {
         int xCoord = (int) Math.ceil((coordinate.getX() - lowerLeft.getX()) / xStateLength);
+        if (xCoord == 0) xCoord++;
         int yCoord = (int) Math.ceil((coordinate.getY() - lowerLeft.getY()) / yStateLength);
+        if (yCoord == 0) yCoord++;
 
         List<Feature> features = new ArrayList<>();
-        features.add(FeatureFactory.createTwoValueFeature(xCoord, yCoord));
+        features.add(FeatureFactory.createTwoValueFeature(xCoord, yCoord, action));
         return features;
     }
 }
