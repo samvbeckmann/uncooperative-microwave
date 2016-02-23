@@ -1,4 +1,4 @@
-package com.samvbeckmann.ai.project1;
+package com.samvbeckmann.ai.project1a;
 
 import java.io.BufferedReader;
 import java.io.File;

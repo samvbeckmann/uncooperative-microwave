@@ -1,4 +1,4 @@
-package com.samvbeckmann.ai.project1;
+package com.samvbeckmann.ai.project1a;
 
 import java.util.ArrayList;
 import java.util.HashMap;

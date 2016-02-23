@@ -1,6 +1,6 @@
 package com.samvbeckmann.ai.project1b;
 
-import com.samvbeckmann.ai.project1.Action;
+import com.samvbeckmann.ai.Action;
 
 /**
  * Models transitions from a given state to a subsequent state, given an action

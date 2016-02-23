@@ -1,4 +1,4 @@
-package com.samvbeckmann.ai.project1;
+package com.samvbeckmann.ai;
 
 import java.util.Arrays;
 import java.util.Collections;

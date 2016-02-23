@@ -1,4 +1,7 @@
-package com.samvbeckmann.ai.project1;
+package com.samvbeckmann.ai.project1a;
+
+import com.samvbeckmann.ai.Action;
+import com.samvbeckmann.ai.ExpectedUtility;
 
 import java.util.Map;
 

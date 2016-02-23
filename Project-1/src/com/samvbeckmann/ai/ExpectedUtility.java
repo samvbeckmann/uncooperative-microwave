@@ -1,4 +1,4 @@
-package com.samvbeckmann.ai.project1;
+package com.samvbeckmann.ai;
 
 /**
  * Wrapper class around an action and it's expected utility.

@@ -1,6 +1,6 @@
 package com.samvbeckmann.ai.project1b;
 
-import com.samvbeckmann.ai.project1.AlgorithmHelper;
+import com.samvbeckmann.ai.project1a.AlgorithmHelper;
 
 /**
  * Simulates many episodes with an agent to determine

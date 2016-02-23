@@ -1,4 +1,6 @@
-package com.samvbeckmann.ai.project1;
+package com.samvbeckmann.ai.project1a;
+
+import com.samvbeckmann.ai.Action;
 
 import java.util.HashMap;
 import java.util.Map;

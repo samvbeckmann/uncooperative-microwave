@@ -1,6 +1,6 @@
 package com.samvbeckmann.ai.project1b;
 
-import com.samvbeckmann.ai.project1.Action;
+import com.samvbeckmann.ai.Action;
 
 import java.util.Random;
 

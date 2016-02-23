@@ -1,7 +1,7 @@
 package com.samvbeckmann.ai.project1b;
 
-import com.samvbeckmann.ai.project1.Action;
-import com.samvbeckmann.ai.project1.ExpectedUtility;
+import com.samvbeckmann.ai.Action;
+import com.samvbeckmann.ai.ExpectedUtility;
 
 import java.util.HashMap;
 import java.util.List;
