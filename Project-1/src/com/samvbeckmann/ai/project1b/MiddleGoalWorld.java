@@ -7,6 +7,11 @@ package com.samvbeckmann.ai.project1b;
  */
 public class MiddleGoalWorld extends StandardWorld
 {
+    public MiddleGoalWorld(double stepCost, double goalReward)
+    {
+        super(stepCost, goalReward);
+    }
+
     @Override
     public boolean isTerminal(Coordinate coordinate)
     {

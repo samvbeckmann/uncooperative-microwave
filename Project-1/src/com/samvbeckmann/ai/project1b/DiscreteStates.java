@@ -3,7 +3,9 @@ package com.samvbeckmann.ai.project1b;
 import com.samvbeckmann.ai.Action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Feature set for a discrete state space.
@@ -25,15 +27,15 @@ public class DiscreteStates implements FeatureSet
     }
 
     @Override
-    public List<Feature> getActiveFeatures(Coordinate coordinate, Action action)
+    public Map<Feature, Double> getActiveFeatures(Coordinate coordinate, Action action)
     {
         int xCoord = (int) Math.ceil((coordinate.getX() - lowerLeft.getX()) / xStateLength);
         if (xCoord == 0) xCoord++;
         int yCoord = (int) Math.ceil((coordinate.getY() - lowerLeft.getY()) / yStateLength);
         if (yCoord == 0) yCoord++;
 
-        List<Feature> features = new ArrayList<>();
-        features.add(FeatureFactory.createTwoValueFeature(xCoord, yCoord, action));
+        Map<Feature, Double> features = new HashMap<>();
+        features.put(FeatureFactory.createTwoValueFeature(xCoord, yCoord, action), 1D);
         return features;
     }
 }

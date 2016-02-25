@@ -2,7 +2,7 @@ package com.samvbeckmann.ai.project1b;
 
 import com.samvbeckmann.ai.Action;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * Standard implementation of {@link StandardWorld}.
@@ -15,6 +15,14 @@ import java.util.List;
 public class StandardWorld implements World
 {
     private FeatureSet features;
+    private double stepCost;
+    private double goalReward;
+
+    public StandardWorld(double stepCost, double goalReward)
+    {
+        this.stepCost = stepCost;
+        this.goalReward = goalReward;
+    }
 
     private final Coordinate LOWER_LEFT_COORD = new Coordinate(0, 0);
 
@@ -50,7 +58,7 @@ public class StandardWorld implements World
     @Override
     public double getReward(Coordinate coordinate)
     {
-        return isTerminal(coordinate) ? 0 : -1;
+        return isTerminal(coordinate) ? goalReward : stepCost;
     } // TODO: Allow tuning
 
     @Override
@@ -78,7 +86,7 @@ public class StandardWorld implements World
     }
 
     @Override
-    public List<Feature> getActiveFeatures(Coordinate coordinate, Action action)
+    public Map<Feature, Double> getActiveFeatures(Coordinate coordinate, Action action)
     {
         return features.getActiveFeatures(coordinate, action);
     }

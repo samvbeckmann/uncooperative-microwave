@@ -1,4 +1,4 @@
-package com.samvbeckmann.ai.project1a;
+package com.samvbeckmann.ai;
 
 /**
  * Exception for Datasets that are not formatted correctly.

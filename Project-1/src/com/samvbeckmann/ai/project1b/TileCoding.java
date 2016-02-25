@@ -2,9 +2,7 @@ package com.samvbeckmann.ai.project1b;
 
 import com.samvbeckmann.ai.Action;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Implementation of Tile Coding features for
@@ -41,9 +39,9 @@ public class TileCoding implements FeatureSet
 
 
     @Override
-    public List<Feature> getActiveFeatures(Coordinate coordinate, Action action)
+    public Map<Feature, Double> getActiveFeatures(Coordinate coordinate, Action action)
     {
-        List<Feature> features = new ArrayList<>(offsets.size());
+        Map<Feature, Double> features = new HashMap<>(offsets.size());
         for (int i = 0; i < offsets.size(); i++)
         {
             Coordinate offset = offsets.get(i);
@@ -51,7 +49,7 @@ public class TileCoding implements FeatureSet
             int row = (int) Math.floor(coordinate.getX() - offset.getX() / (xRange / xResolution));
             int col = (int) Math.floor(coordinate.getY() - offset.getY() / (yRange / yResolution));
 
-            features.add(FeatureFactory.createThreeValueFeature(row, col, i, action));
+            features.put(FeatureFactory.createThreeValueFeature(row, col, i, action), 1D);
         }
 
         return features;

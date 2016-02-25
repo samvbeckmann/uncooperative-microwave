@@ -2,7 +2,7 @@ package com.samvbeckmann.ai.project1b;
 
 import com.samvbeckmann.ai.Action;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * Defines the "Russel World" presented in the text.
@@ -87,7 +87,7 @@ public class RusselWorld implements World
     }
 
     @Override
-    public List<Feature> getActiveFeatures(Coordinate coordinate, Action action)
+    public Map<Feature, Double> getActiveFeatures(Coordinate coordinate, Action action)
     {
         return featureSet.getActiveFeatures(coordinate, action);
     }

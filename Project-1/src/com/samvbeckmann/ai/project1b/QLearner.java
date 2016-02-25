@@ -20,17 +20,15 @@ public class QLearner
     private World world;
     private TransitionModel transitions;
     private double discount;
-    private double epsilon;
     private double lambda;
     private double learningRate;
     private Random rnd = new Random();
 
-    public QLearner(World world, TransitionModel transitions, double discount, double epsilon, double lambda, double learningRate)
+    public QLearner(World world, TransitionModel transitions, double discount, double lambda, double learningRate)
     {
         this.world = world;
         this.transitions = transitions;
         this.discount = discount;
-        this.epsilon = epsilon;
         this.lambda = lambda;
         this.learningRate = learningRate;
         utilities = new HashMap<>();
@@ -43,7 +41,7 @@ public class QLearner
      *
      * @return Reward for this episode
      */
-    public double performEpisode()
+    public double performEpisode(double epsilon)
     {
         double totalReward = 0;
         Coordinate position = world.getStartingPosition();
@@ -52,13 +50,13 @@ public class QLearner
 
         while (!world.isTerminal(position))
         {
-            List<Feature> currentFeatures = world.getActiveFeatures(position, action);
-            for (Feature feature : currentFeatures)
+            Map<Feature, Double> currentFeatures = world.getActiveFeatures(position, action);
+            for (Feature feature : currentFeatures.keySet())
             {
                 Double eValue = eligibility.get(feature);
                 if (eValue == null)
                     eValue = 0D;
-                eligibility.put(feature, ++eValue);
+                eligibility.put(feature, eValue + currentFeatures.get(feature));
             }
 
             position = world.normalizeCoordinate(transitions.getNewCoordinate(position, action));
@@ -76,7 +74,9 @@ public class QLearner
                 Double featUtility = utilities.get(feature);
                 if (featUtility == null)
                     featUtility = 0D;
-                featUtility += delta * learningRate * eligibility.get(feature);
+                Double featActivation = currentFeatures.get(feature);
+                if (featActivation != null)
+                    featUtility += delta * learningRate * eligibility.get(feature) * featActivation;
                 utilities.put(feature, featUtility);
             }
 
@@ -107,15 +107,15 @@ public class QLearner
      * @param features whose utilities are to be summed
      * @return Sum of all Feature utilities
      */
-    private double sumUtilitiesOfFeatures(List<Feature> features)
+    private double sumUtilitiesOfFeatures(Map<Feature, Double> features)
     {
         double result = 0;
 
-        for (Feature feature : features)
+        for (Feature feature : features.keySet())
         {
             Double utility = utilities.get(feature);
             if (utility != null)
-                result += utility;
+                result += utility * features.get(feature);
         }
         return result;
     }
@@ -133,7 +133,7 @@ public class QLearner
 
         for (Action nextAction : Action.values())
         {
-            List<Feature> nextFeatures = world.getActiveFeatures(location, nextAction);
+            Map<Feature, Double> nextFeatures = world.getActiveFeatures(location, nextAction);
             Double qValue = sumUtilitiesOfFeatures(nextFeatures);
 
             if (qValue > bestExpectedUtility.getUtility())

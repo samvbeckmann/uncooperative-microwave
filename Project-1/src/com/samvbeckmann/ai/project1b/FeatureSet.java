@@ -2,7 +2,7 @@ package com.samvbeckmann.ai.project1b;
 
 import com.samvbeckmann.ai.Action;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * Defines the features in the world.
@@ -19,5 +19,5 @@ public interface FeatureSet
      * @param coordinate Position to get features from
      * @return List of active features
      */
-    List<Feature> getActiveFeatures(Coordinate coordinate, Action action);
+    Map<Feature, Double> getActiveFeatures(Coordinate coordinate, Action action);
 }

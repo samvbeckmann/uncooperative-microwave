@@ -1,5 +1,7 @@
 package com.samvbeckmann.ai.project1a;
 
+import com.samvbeckmann.ai.InvalidFileFormatException;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;

@@ -3,6 +3,7 @@ package com.samvbeckmann.ai.project1b;
 import com.samvbeckmann.ai.Action;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Defines a world for the q-learning problem.
@@ -66,13 +67,14 @@ public interface World
     Coordinate getLowerLeftCoordinate();
 
     /**
-     * Gets the Features at a given position.
+     * Gets the Features at a given position and their activations.
      * Usually used in conjunction with a {@link FeatureSet}
      *
      * @param coordinate position to get features for
-     * @return List of all features "activated" at the given position
+     * @return Map of all features "activated" at the given position, and
+     *          their associated activations
      */
-    List<Feature> getActiveFeatures(Coordinate coordinate, Action action);
+    Map<Feature, Double> getActiveFeatures(Coordinate coordinate, Action action);
 
     /**
      * Set the FeatureSet of the world.
