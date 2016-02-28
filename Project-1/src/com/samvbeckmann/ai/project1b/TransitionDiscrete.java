@@ -11,9 +11,9 @@ import java.util.Random;
  */
 public class TransitionDiscrete implements TransitionModel
 {
-    private double mainProbability;
-    private double sideProbability;
-    private Random rnd = new Random();
+    private final double mainProbability;
+    private final double sideProbability;
+    private final Random rnd = new Random();
 
     public TransitionDiscrete(double mainProbability)
     {

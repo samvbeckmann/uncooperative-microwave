@@ -16,8 +16,9 @@ import java.util.Scanner;
  */
 public class Simulation
 {
-    private static final int NUM_ITERATIONS = 2000;
+    private static final int NUM_ITERATIONS = 5000;
     private static final int STATUS_INTERVAL = NUM_ITERATIONS / 10;
+    private static final int OUTPUT_RESOLUTION = 50;
 
     public static void main(String[] args)
     {
@@ -25,6 +26,7 @@ public class Simulation
         FeatureSet featureSet;
         TransitionModel transitionModel;
         QLearner agent = null;
+        double epsilon = 0;
 
         try
         {
@@ -64,7 +66,10 @@ public class Simulation
             switch (featureName) // TODO: Allow for setting the options here.
             {
                 case "discrete":
-                    featureSet = new DiscreteStates(world, 4, 3);
+                    if (world instanceof RusselWorld)
+                        featureSet = new DiscreteStates(world, 4, 3);
+                    else
+                        featureSet = new DiscreteStates(world, 10, 10);
                     break;
                 case "tile":
                     featureSet = new TileCoding(world, 10, 10, 10);
@@ -80,7 +85,7 @@ public class Simulation
 
             String transitionName = br.readLine();
 
-            switch (transitionName)
+            switch (transitionName) // TODO: Allow for setting the options here.
             {
                 case "gaussian":
                     transitionModel = new TransitionGaussian(1, 0.3, 10);
@@ -96,6 +101,8 @@ public class Simulation
             agent = new QLearner(world, transitionModel, Double.parseDouble(agentArgs[0]),
                     Double.parseDouble(agentArgs[1]), Double.parseDouble(agentArgs[2]));
 
+            epsilon = Double.parseDouble(agentArgs[3]);
+
         } catch (Exception e)
         {
             System.err.println(e.getMessage());
@@ -103,13 +110,11 @@ public class Simulation
 
         assert agent != null;
 
-//        QLearner agent = new QLearner(world, transitionModel, 1, 0.9, 0.005);
-
         double runningUtility = 0;
 
         for (int i = 1; i <= NUM_ITERATIONS; i++)
         {
-            runningUtility += agent.performEpisode(.1 / i);
+            runningUtility += agent.performEpisode(epsilon / i);
             if (i % STATUS_INTERVAL == 0)
             {
                 System.out.printf("Trial: %d || Last %d Utility: %f\n", i, STATUS_INTERVAL,
@@ -118,19 +123,27 @@ public class Simulation
             }
         }
 
-        String displayResults = "";
+        System.out.print(displayResults(false, world, agent));
+    }
 
-        for (int i = 0; i < 50; i++)
+    private static String displayResults(boolean csv, World world, QLearner agent)
+    {
+        String results = "\n";
+
+        for (int i = 0; i < OUTPUT_RESOLUTION; i++)
         {
-            for (int j = 0; j < 50; j++)
+            for (int j = OUTPUT_RESOLUTION - 1; j >= 0; j--)
             {
-                Coordinate position = new Coordinate((world.getXRange() / 50) * i, (world.getYRange() / 50) * j);
-                displayResults += AlgorithmHelper.getCharFromAction(agent.getMaxExpectedUtility(position).getAction());
+                double xPos = (world.getXRange() / OUTPUT_RESOLUTION) * i;
+                double yPos = (world.getYRange() / OUTPUT_RESOLUTION) * j;
+                Coordinate position = new Coordinate(xPos, yPos);
+                results += AlgorithmHelper.getCharFromAction(agent.getMaxExpectedUtility(position).getAction());
+                if (csv) results += '\t';
             }
 
-            displayResults += "\n";
+            results += "\n";
         }
 
-        System.out.print(displayResults);
+        return results;
     }
 }

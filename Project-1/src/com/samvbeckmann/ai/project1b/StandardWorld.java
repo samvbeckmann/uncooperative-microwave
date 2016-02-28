@@ -15,8 +15,8 @@ import java.util.Map;
 public class StandardWorld implements World
 {
     private FeatureSet features;
-    private double stepCost;
-    private double goalReward;
+    private final double stepCost;
+    private final double goalReward;
 
     public StandardWorld(double stepCost, double goalReward)
     {

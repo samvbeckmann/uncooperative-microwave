@@ -11,10 +11,10 @@ import java.util.Random;
  */
 public class TransitionGaussian implements TransitionModel
 {
-    private double meanMagnitude;
-    private double sdMagnitude;
-    private double sdAngle;
-    private Random rnd = new Random();
+    private final double meanMagnitude;
+    private final double sdMagnitude;
+    private final double sdAngle;
+    private final Random rnd = new Random();
 
     public TransitionGaussian(double meanMagnitude, double sdMagnitude, double sdAngle)
     {

@@ -12,11 +12,11 @@ import java.util.*;
  */
 public class TileCoding implements FeatureSet
 {
-    private int xResolution;
-    private int yResolution;
-    private double xRange;
-    private double yRange;
-    private List<Coordinate> offsets;
+    private final int xResolution;
+    private final int yResolution;
+    private final double xRange;
+    private final double yRange;
+    private final List<Coordinate> offsets;
 
     public TileCoding(World world, int numIterations, int xResolution, int yResolution)
     {
