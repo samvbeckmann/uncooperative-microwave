@@ -1,4 +1,6 @@
-package com.samvbeckmann.ai.project1;
+package com.samvbeckmann.ai.project1a;
+
+import com.samvbeckmann.ai.Action;
 
 import java.util.Map;
 
@@ -12,7 +14,7 @@ import java.util.Map;
  */
 public class State
 {
-    private float reward;
+    private double reward;
     private TransitionMap transitions;
     private boolean isTerminal;
     private boolean isInitialized;
@@ -27,7 +29,7 @@ public class State
         isInitialized = true;
     }
 
-    public State(String id, float reward, boolean isTerminal)
+    public State(String id, double reward, boolean isTerminal)
     {
         this.id = id;
         this.reward = reward;
@@ -46,7 +48,7 @@ public class State
         return isTerminal;
     }
 
-    public float getReward()
+    public double getReward()
     {
         return reward;
     }
@@ -57,9 +59,9 @@ public class State
      * @param action Action that would be taken.
      * @return Transition Table as a result of that action.
      */
-    public Map<State, Float> getPossibleOutcomes(Action action)
+    public Map<State, Double> getPossibleOutcomes(Action action)
     {
-        Map<State, Float> transitionTable;
+        Map<State, Double> transitionTable;
         try
         {
             if (!isInitialized)

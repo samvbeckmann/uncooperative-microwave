@@ -1,4 +1,4 @@
-package com.samvbeckmann.ai.project1;
+package com.samvbeckmann.ai.project1a;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
 public class ExampleMaze implements Maze
 {
     private Map<String, State> stateIDMap;
-    private float stepCost;
-    private float terminationReward;
-    private float terminationPunishment;
+    private double stepCost;
+    private double terminationReward;
+    private double terminationPunishment;
 
-    public ExampleMaze(float stepCost, float terminationReward, float terminationPunishment)
+    public ExampleMaze(double stepCost, double terminationReward, double terminationPunishment)
     {
         this.stepCost = stepCost;
         this.terminationReward = terminationReward;

@@ -1,4 +1,6 @@
-package com.samvbeckmann.ai.project1;
+package com.samvbeckmann.ai.project1a;
+
+import com.samvbeckmann.ai.Action;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,10 +34,10 @@ public class PickupTransitionMap extends SimpleTransitionMap
      * @param nextState state to transition to.
      * @return Transition map of 100% chance of one state.
      */
-    private Map<State, Float> makePickupTransition(State nextState)
+    private Map<State, Double> makePickupTransition(State nextState)
     {
-        Map<State, Float> transitionTable = new HashMap<>();
-        transitionTable.put(nextState, 1.0F);
+        Map<State, Double> transitionTable = new HashMap<>();
+        transitionTable.put(nextState, 1.0);
         return transitionTable;
     }
 }

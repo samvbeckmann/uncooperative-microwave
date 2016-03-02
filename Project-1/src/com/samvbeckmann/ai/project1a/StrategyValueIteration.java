@@ -1,4 +1,4 @@
-package com.samvbeckmann.ai.project1;
+package com.samvbeckmann.ai.project1a;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,10 +10,10 @@ import java.util.Map;
  */
 public class StrategyValueIteration implements Strategy
 {
-    private float discount;
-    private float epsilon;
+    private double discount;
+    private double epsilon;
 
-    public StrategyValueIteration(float discount, float epsilon)
+    public StrategyValueIteration(double discount, double epsilon)
     {
         this.discount = discount;
         this.epsilon = epsilon;
@@ -22,22 +22,22 @@ public class StrategyValueIteration implements Strategy
     @Override
     public Policy generatePolicy(List<State> states)
     {
-        Map<State, Float> currentUtilities = new HashMap<>();
-        Map<State, Float> nextUtilities = new HashMap<>();
-        float delta;
+        Map<State, Double> currentUtilities = new HashMap<>();
+        Map<State, Double> nextUtilities = new HashMap<>();
+        double delta;
 
         for(State state : states)
-            currentUtilities.put(state, 0F);
+            currentUtilities.put(state, 0D);
 
         do
         {
             delta = 0;
             for (State state : states)
             {
-                float adjustedUtility = state.getReward() + discount * AlgorithmHelper.getMaxExpectedUtility(currentUtilities, state);
+                double adjustedUtility = state.getReward() + discount * AlgorithmHelper.getMaxExpectedUtility(currentUtilities, state);
                 nextUtilities.put(state, adjustedUtility);
 
-                float stateDelta = Math.abs(adjustedUtility - currentUtilities.get(state));
+                double stateDelta = Math.abs(adjustedUtility - currentUtilities.get(state));
                 delta = Math.max(delta, stateDelta);
             }
 
@@ -56,22 +56,22 @@ public class StrategyValueIteration implements Strategy
         return "Value Iteration";
     }
 
-    public float getDiscount()
+    public double getDiscount()
     {
         return discount;
     }
 
-    public void setDiscount(float discount)
+    public void setDiscount(double discount)
     {
         this.discount = discount;
     }
 
-    public float getEpsilon()
+    public double getEpsilon()
     {
         return epsilon;
     }
 
-    public void setEpsilon(float epsilon)
+    public void setEpsilon(double epsilon)
     {
         this.epsilon = epsilon;
     }

@@ -1,10 +1,12 @@
-package com.samvbeckmann.ai.project1;
+package com.samvbeckmann.ai.project1a;
+
+import com.samvbeckmann.ai.Action;
 
 import java.util.Map;
 
 /**
  * A Transition Map returns a transition table for a given action.
- * Generally implemented with Map<Action, Map<State, Float>>,
+ * Generally implemented with Map<Action, Map<State, Double>>,
  * but construction is left up the user.
  * Every state has a TransitionMap associated with it.
  *
@@ -20,5 +22,5 @@ public interface TransitionMap
      * @param action Action to be taken.
      * @return A transition table, ie a mapping of subsequent states to their probabilities.
      */
-    Map<State, Float> getTransitionTableFromAction(Action action);
+    Map<State, Double> getTransitionTableFromAction(Action action);
 }

@@ -1,4 +1,6 @@
-package com.samvbeckmann.ai.project1;
+package com.samvbeckmann.ai.project1a;
+
+import com.samvbeckmann.ai.Action;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +62,7 @@ public class Policy
      * @param states List of states in the world
      * @return true iff all states are in the policy.
      */
-    boolean verifyPolicy(List<State> states) // TODO bugged.
+    boolean verifyPolicy(List<State> states)
     {
         for (State state : states)
             if (actionMap.get(state.toString()) == null)
