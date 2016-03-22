@@ -1,9 +1,6 @@
 package com.samvbeckmann.ai.project2;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Tests the Algorithms in {@link Algorithms} on a
@@ -25,15 +22,29 @@ public class AlgorithmTester
         System.out.print("Enter bayesian network file: ");
         BayesianNetwork network = BayesianHelper.makeNetworkFromFile(keyboardIn.next());
 
-        Map<Integer, Boolean> evidence = new HashMap<>();
+        System.out.print("Percent of nodes to be hidden: ");
+        int percent = keyboardIn.nextInt();
+
+        if (percent < 0 || percent > 100)
+            System.exit(12);
+
+        int numHiddenVars = (int) Math.round(network.getNumNodes() * (percent * 0.01)) - 1;
+        if (numHiddenVars < 0)
+            numHiddenVars = 0;
 
         Random rnd = new Random();
 
-        int queryVar = rnd.nextInt(network.getNumNodes());
+        List<Integer> nodes = BayesianHelper.getNumberedList(network.getNumNodes());
 
-        for (int i = 0; i < network.getNumNodes(); i++)
-            if (i != queryVar)
-                evidence.put(i, rnd.nextBoolean());
+        for (int i = 0; i < numHiddenVars; i++)
+            nodes.remove(rnd.nextInt(nodes.size()));
+
+        int queryVar = nodes.remove(rnd.nextInt(nodes.size()));
+
+        Map<Integer, Boolean> evidence = new HashMap<>();
+
+        for (int node : nodes)
+            evidence.put(node, rnd.nextBoolean());
 
         long startingTime = System.currentTimeMillis();
         double[] enumAskResult = Algorithms.enumerationAsk(queryVar, evidence, network);

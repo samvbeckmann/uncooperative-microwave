@@ -7,8 +7,8 @@ package com.samvbeckmann.ai.project2;
  */
 class NetworkNode
 {
-    private int[] parents;
-    private double[] probabilities;
+    private final int[] parents;
+    private final double[] probabilities;
 
     NetworkNode(int[] parents, double[] probabilities)
     {

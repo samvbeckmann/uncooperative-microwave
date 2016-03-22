@@ -8,7 +8,7 @@ package com.samvbeckmann.ai.project2;
  */
 class BayesianNetwork
 {
-    private NetworkNode[] nodes;
+    private final NetworkNode[] nodes;
 
     BayesianNetwork(NetworkNode[] nodes)
     {

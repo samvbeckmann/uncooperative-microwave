@@ -112,15 +112,25 @@ final class Algorithms
                 result.weight *= bn.getProbGivenParents(i, event.get(i),
                         BayesianHelper.getParentActivations(bn.getParents(i), event));
             else
-                result.event.put(i, Math.random() > bn.getProbGivenParents(i, true,
+                result.event.put(i, Math.random() < bn.getProbGivenParents(i, true,
                         BayesianHelper.getParentActivations(bn.getParents(i), event)));
         }
         return result;
     }
 
+    /**
+     * Estimates the probability distribution for a
+     * query variable given an event.
+     * Implementation of Gibbs-Ask from textbook
+     *
+     * @param queryVar ID of variable to be queried
+     * @param event Map of variable ID's to their known states
+     * @param bn Bayesian Network
+     * @param numSamples Number of trials to perform to generate estimate
+     * @return Estimate of probability distribution for query variable
+     */
     static double[] gibbsAsk(int queryVar, Map<Integer, Boolean> event, BayesianNetwork bn, int numSamples)
     {
-
         double[] estimate = {0, 0};
         List<Integer> unknownVars = new LinkedList<>();
         for (int i = 0; i < bn.getNumNodes(); i++)
@@ -130,7 +140,7 @@ final class Algorithms
         for (int i = 0; i < numSamples; i++)
         {
             for (int var : unknownVars)
-                event.put(var, Math.random() > bn.getProbGivenParents(var, true,
+                event.put(var, Math.random() < bn.getProbGivenParents(var, true,
                         BayesianHelper.getParentActivations(bn.getParents(var), event)));
             boolean valueInSample = event.get(queryVar);
             estimate[valueInSample ? 0 : 1] += 1;
@@ -145,10 +155,10 @@ final class Algorithms
      */
     private static class EventWeightWrapper
     {
-        Map<Integer, Boolean> event;
+        final Map<Integer, Boolean> event;
         double weight;
 
-        EventWeightWrapper(Map<Integer, Boolean> event, double weight)
+        private EventWeightWrapper(Map<Integer, Boolean> event, double weight)
         {
             this.event = event;
             this.weight = weight;
