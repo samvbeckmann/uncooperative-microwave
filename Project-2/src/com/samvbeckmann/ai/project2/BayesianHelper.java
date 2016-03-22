@@ -10,11 +10,20 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by sam on 3/16/16.
+ * Helper methods for Bayesian Network Algorithms.
+ *
+ * @author Sam Beckmann
  */
-public final class BayesianHelper
+final class BayesianHelper
 {
-    public static BayesianNetwork makeNetworkFromFile(String filename) {
+    /**
+     * Generates a Bayesian Network from a file.
+     * The file should be in the /datasets directory.
+     *
+     * @param filename Name of file with extension
+     * @return Generated Bayesian Network
+     */
+    static BayesianNetwork makeNetworkFromFile(String filename) {
 
         List<NetworkNode> nodes = new LinkedList<>();
 
@@ -48,7 +57,16 @@ public final class BayesianHelper
         return new BayesianNetwork(nodes.toArray(new NetworkNode[nodes.size()]));
     }
 
-    public static boolean[] getParentActivations(int[] parents, Map<Integer, Boolean> event)
+    /**
+     * Returns an array of booleans of the states of parents
+     * from an event.
+     * The array is ordered by the order of the passed parents.
+     *
+     * @param parents Array of ID's of parents
+     * @param event Mapping of node ID's to states
+     * @return Array of parent's activations
+     */
+    static boolean[] getParentActivations(int[] parents, Map<Integer, Boolean> event)
     {
         boolean[] parentActivations = new boolean[parents.length];
         for (int i = 0; i < parents.length; i++)
@@ -56,7 +74,13 @@ public final class BayesianHelper
         return parentActivations;
     }
 
-    public static double[] normalize(double[] array)
+    /**
+     * Normalizes an array to have a sum of one.
+     *
+     * @param array Array of doubles to be normalized
+     * @return normalized array
+     */
+    static double[] normalize(double[] array)
     {
         double sum = 0;
 
@@ -78,7 +102,7 @@ public final class BayesianHelper
      * @param number Number of items to have in the list
      * @return new list of numbers up to number
      */
-    public static List<Integer> getNumberedList(int number)
+    static List<Integer> getNumberedList(int number)
     {
         List<Integer> result = new ArrayList<>(number);
         for (int i = 0; i < number; i++)

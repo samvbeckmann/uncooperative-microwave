@@ -6,11 +6,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by sam on 3/16/16.
+ * Contains algorithms for Bayesian Network prediction
+ *
+ * @author Sam Beckmann
  */
-public final class Algorithms
+final class Algorithms
 {
-    public static double[] enumerationAsk(int queryVar, Map<Integer, Boolean> evidence, BayesianNetwork bn)
+    /**
+     * Determines the exact probabilities of events.
+     * Implementation of Enumeration-Ask from textbook.
+     *
+     * @param queryVar ID of variable to be queried
+     * @param evidence Map of variable ID's to their known state
+     * @param bn       Bayesian Network
+     * @return a Probability distribution of query variable
+     */
+    static double[] enumerationAsk(int queryVar, Map<Integer, Boolean> evidence, BayesianNetwork bn)
     {
         double[] qDistribution = new double[2];
 
@@ -24,6 +35,15 @@ public final class Algorithms
         return BayesianHelper.normalize(qDistribution);
     }
 
+    /**
+     * Performs recursive enumeration over variables.
+     * Implementation of Enumerate-All from textbook.
+     *
+     * @param vars     List of not yet ued variables in the Bayesian Network
+     * @param evidence Map of variable ID's to their current states
+     * @param bn       Bayesian Network
+     * @return Probability of evidence occurring.
+     */
     private static double enumerateAll(List<Integer> vars, Map<Integer, Boolean> evidence, BayesianNetwork bn)
     {
         if (vars.size() == 0)
@@ -49,10 +69,18 @@ public final class Algorithms
         }
     }
 
-    public static double[] likelihoodWeighting(int queryVar,
-                                               Map<Integer, Boolean> event,
-                                               BayesianNetwork bn,
-                                               int numSamples)
+    /**
+     * Estimates the probability distribution for a
+     * query variable given an event.
+     * Implementation of Likelihood-Weighting from textbook.
+     *
+     * @param queryVar ID of variable to be queried
+     * @param event Map of variable ID's to their known states
+     * @param bn Bayesian Network
+     * @param numSamples Number of trials to perform to generate estimate
+     * @return Estimate of probability distribution for query variable
+     */
+    static double[] likelihoodWeighting(int queryVar, Map<Integer, Boolean> event, BayesianNetwork bn, int numSamples)
     {
         double[] weightedVectors = new double[2];
 
@@ -67,6 +95,14 @@ public final class Algorithms
         return BayesianHelper.normalize(weightedVectors);
     }
 
+    /**
+     * Determines the weight of a given event happening.
+     * Implementation of Weighted-Sample from textbook.
+     *
+     * @param bn Bayesian Network
+     * @param event Map of variable ID's to their known states
+     * @return Event from the sample, and associated weight, wrapped in an {@link EventWeightWrapper}
+     */
     private static EventWeightWrapper weightedSample(BayesianNetwork bn, Map<Integer, Boolean> event)
     {
         EventWeightWrapper result = new EventWeightWrapper(event, 1);
@@ -82,7 +118,7 @@ public final class Algorithms
         return result;
     }
 
-    public static double[] gibbsAsk(int queryVar, Map<Integer, Boolean> event, BayesianNetwork bn, int numSamples)
+    static double[] gibbsAsk(int queryVar, Map<Integer, Boolean> event, BayesianNetwork bn, int numSamples)
     {
 
         double[] estimate = {0, 0};
@@ -112,7 +148,7 @@ public final class Algorithms
         Map<Integer, Boolean> event;
         double weight;
 
-        public EventWeightWrapper(Map<Integer, Boolean> event, double weight)
+        EventWeightWrapper(Map<Integer, Boolean> event, double weight)
         {
             this.event = event;
             this.weight = weight;

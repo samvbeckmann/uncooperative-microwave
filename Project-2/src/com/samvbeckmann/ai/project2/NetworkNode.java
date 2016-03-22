@@ -1,19 +1,30 @@
 package com.samvbeckmann.ai.project2;
 
 /**
- * Created by sam on 3/16/16.
+ * Defines a node in a network.
+ * A node contains an array of parent IDs, and
+ * a probability table.
  */
-public class NetworkNode
+class NetworkNode
 {
     private int[] parents;
     private double[] probabilities;
 
-    public NetworkNode(int[] parents, double[] probabilities) {
+    NetworkNode(int[] parents, double[] probabilities)
+    {
         this.parents = parents;
         this.probabilities = probabilities;
     }
 
-    public Double getProbFromParents(boolean[] parents) {
+    /**
+     * Gets the specific probability from the probability table
+     * from an array of parents activations.
+     *
+     * @param parents Array of parents states
+     * @return Specific probability from parents' states
+     */
+    Double getProbFromParents(boolean[] parents)
+    {
         int resultLocation = 0;
         for (int i = 0; i < parents.length; i++)
             if (!parents[i])
@@ -21,7 +32,7 @@ public class NetworkNode
         return probabilities[resultLocation];
     }
 
-    public int[] getParents()
+    int[] getParents()
     {
         return parents;
     }

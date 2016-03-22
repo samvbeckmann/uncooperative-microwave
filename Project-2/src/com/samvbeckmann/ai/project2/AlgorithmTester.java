@@ -6,10 +6,17 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * Created by sam on 3/17/16.
+ * Tests the Algorithms in {@link Algorithms} on a
+ * Bayesian Network supplied in a file.
+ *
+ * @author Sam Beckmann
  */
 public class AlgorithmTester
 {
+    /**
+     * Number of tests likelihood weighting and Gibbs Sampling
+     * should preform to generate their estimates
+     */
     private static final int NUM_TESTS = 1000;
 
     public static void main(String[] args)
