@@ -66,11 +66,12 @@ final class BayesianHelper
      * @param event Mapping of node ID's to states
      * @return Array of parent's activations
      */
-    static boolean[] getParentActivations(int[] parents, Map<Integer, Boolean> event)
+    @Deprecated
+    static int[] getParentActivations(int[] parents, BayesianEvent event)
     {
-        boolean[] parentActivations = new boolean[parents.length];
+        int[] parentActivations = new int[parents.length];
         for (int i = 0; i < parents.length; i++)
-            parentActivations[i] = event.get(parents[i]);
+            parentActivations[i] = event.getEvidenceAtID(parents[i]);
         return parentActivations;
     }
 
@@ -87,12 +88,40 @@ final class BayesianHelper
         for (double anArray : array)
             sum += anArray;
 
-        double normalizingFactor = 1/ sum;
+        double normalizingFactor = 1 / sum;
 
         for (int i = 0; i < array.length; i++)
             array[i] *= normalizingFactor;
 
         return array;
+    }
+
+    /**
+     * Picks a random index of a normalized probability distribution,
+     * proportional to the probabilities of the distribution.
+     *
+     * @param distribution A normalized probability distribution
+     * @return An integer indicating which item in the probability distribution was chosen
+     */
+    public static int pickRandom(double [] distribution)
+    {
+        double resultingRoll = Math.random();
+        int selection = 0;
+
+        try
+        {
+            double runningSum = distribution[0];
+
+            while (runningSum < resultingRoll)
+                runningSum += distribution[++selection];
+
+        } catch (IndexOutOfBoundsException indexError)
+        {
+            System.err.println("Distribution passed to pickRandom wasn't properly normalized!");
+            System.err.println(indexError.getMessage());
+            selection = 0;
+        }
+        return selection;
     }
 
     /**
@@ -102,7 +131,7 @@ final class BayesianHelper
      * @param number Number of items to have in the list
      * @return new list of numbers up to number
      */
-    static List<Integer> getNumberedList(int number)
+    static List<Integer> makeNumberedList(int number)
     {
         List<Integer> result = new ArrayList<>(number);
         for (int i = 0; i < number; i++)

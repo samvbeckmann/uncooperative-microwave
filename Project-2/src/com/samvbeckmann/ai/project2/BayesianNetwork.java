@@ -26,19 +26,47 @@ class BayesianNetwork
         return nodes[node].getParents();
     }
 
+    double[] getDistribution(int node, BayesianEvent event)
+    {
+        return nodes[node].getDistribution(event);
+    }
+
     /**
      * Get the probability of a given node being in a given state
      * from that node's parent activations.
      *
-     * @param node ID of node
-     * @param state target state for node
-     * @param parents array of node's parents' states
+     * @param node    ID of node
+     * @param state   target state for node
+     * @param event   TODO
      * @return Probability of node being in state, given parents
      */
-    double getProbGivenParents(int node, boolean state, boolean[] parents)
+    double getProbGivenParents(int node, int state, BayesianEvent event)
     {
-        double prob = nodes[node].getProbFromParents(parents);
-        return state ? prob : 1 - prob;
+        return nodes[node].getProbFromParents(event, state);
+    }
+
+    /**
+     * Gets the probability of a node given it's Markov Blanket.
+     *
+     * @param node
+     * @param state
+     * @param event
+     * @return
+     */
+    double getProbGivenMB(int node, int state, BayesianEvent event)
+    {
+        double probability = nodes[node].getProbFromParents(event, state);
+        for (int child : nodes[node].children)
+            probability *= nodes[child].getProbFromParents(event, event.getEvidenceAtID(child));
+        return probability;
+    }
+
+    double[] getMBDistribution(int node, BayesianEvent event)
+    {
+        double[] result = new double[getNumStates(node)];
+        for (int i = 0; i < getNumStates(node); i++)
+            result[i] = getProbGivenMB(node, i, event);
+        return BayesianHelper.normalize(result);
     }
 
     /**
@@ -47,5 +75,65 @@ class BayesianNetwork
     int getNumNodes()
     {
         return nodes.length;
+    }
+
+    int getNumStates(int nodeID)
+    {
+        return nodes[nodeID].getNumStates();
+    }
+
+    /**
+     * Defines a node in a network.
+     * A node contains an array of parent IDs, and
+     * a probability table.
+     */
+    private class NetworkNode
+    {
+        private final int[] parentIDs;
+        private final int[] children;
+        private final double[][] probabilities;
+        private final int numStates;
+
+        private NetworkNode(int[] parentIDs, double[][] probabilities, int domain, int[] children)
+        {
+            this.parentIDs = parentIDs;
+            this.probabilities = probabilities;
+            this.numStates = domain;
+            this.children = children;
+        }
+
+        /**
+         * Gets the specific probability from the probability table
+         * from an array of parents activations.
+         *
+         * @param event Bayesian Event that contains the parents states
+         * @return Specific probability from parents' states
+         */
+        double getProbFromParents(BayesianEvent event, int state)
+        {
+            return getDistribution(event)[state];
+        }
+
+        double[] getDistribution(BayesianEvent event)
+        {
+            int lookup = 0;
+            int startSize = probabilities.length;
+            for(int i  = parentIDs.length - 1; i >= 0; i--)
+            {
+                startSize /= nodes[i].getNumStates();
+                lookup += startSize * event.getEvidenceAtID(i);
+            }
+            return probabilities[lookup];
+        }
+
+        int[] getParents()
+        {
+            return parentIDs;
+        }
+
+        int getNumStates()
+        {
+            return numStates;
+        }
     }
 }

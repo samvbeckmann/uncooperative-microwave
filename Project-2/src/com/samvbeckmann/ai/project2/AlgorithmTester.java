@@ -34,7 +34,7 @@ public class AlgorithmTester
 
         Random rnd = new Random();
 
-        List<Integer> nodes = BayesianHelper.getNumberedList(network.getNumNodes());
+        List<Integer> nodes = BayesianHelper.makeNumberedList(network.getNumNodes());
 
         for (int i = 0; i < numHiddenVars; i++)
             nodes.remove(rnd.nextInt(nodes.size()));
