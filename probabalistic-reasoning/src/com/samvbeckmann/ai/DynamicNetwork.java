@@ -6,15 +6,39 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * Implementation of a Dynamic Bayesian Network
+ * Implementation of a Dynamic Bayesian Network.
+ * This implementation only supports two possible states, and boolean evidence.
+ * This could be expanded in the future to work with any number of discrete states,
+ * as well as discrete evidence variables.
+ *
+ * @author Sam Beckmann
  */
-public class DynamicNetwork
+class DynamicNetwork
 {
-    public IEvidence evidenceContainer;
+    /**
+     * Container to house evidence for the simulation.
+     * Evidence is placed directly in the container, without
+     * interacting with the DBN.
+     */
+    Evidence evidenceContainer;
 
+    /**
+     * Initial probability of being in state 0.
+     */
     private double initProb;
-    private double[] transitionProbs = new double[2]; // Only supports boolean states
+
+    /**
+     * Probability of transitioning to state 0, given you are in
+     * state i.
+     */
+    private double[] transitionProbs = new double[2];
+
+    /**
+     * Mapping of evidence variables to their respective transition
+     * probability tables.
+     */
     private Map<String, Double[]> evidenceProbs;
+
     private Random rnd;
 
     /**
@@ -23,13 +47,13 @@ public class DynamicNetwork
      */
     private boolean[] particleSamples;
 
-    public DynamicNetwork(double initProb, double[] transitionProbs, Map<String, Double[]> evidenceProbs)
+    DynamicNetwork(double initProb, double[] transitionProbs, Map<String, Double[]> evidenceProbs)
     {
         this.initProb = initProb;
         this.transitionProbs = transitionProbs;
         this.evidenceProbs = evidenceProbs;
         this.rnd = new Random();
-        this.evidenceContainer = new EvidenceSleep();
+        this.evidenceContainer = new Evidence();
     }
 
     /**
@@ -48,35 +72,55 @@ public class DynamicNetwork
         }
     }
 
-    public double particleFiltering(int timeStep)
+    /**
+     * Performs the particle filtering algorithm in the given timestep.
+     * TODO: Write more documentation, take another at algorithm
+     *
+     * @param timeStep Timestep to perform the algorithm on.
+     * @return Estimate of state probability at the given timestep.
+     */
+    private double particleFiltering(int timeStep)
     {
         double[] weights = new double[particleSamples.length];
 
         for (int i = 0; i < particleSamples.length; i++)
         {
             particleSamples[i] = getTransition(particleSamples[i]);
-            weights[i] = probEvidenceFromSample(particleSamples[i], timeStep);
+            weights[i] = probEvidenceFromSample(particleSamples[i], evidenceContainer.getEvidenceAtTimestep(timeStep));
         }
 
         return weightedSampleWithReplacement(weights);
     }
 
+    /**
+     * Gets a next state based on a previous state and the transition table.
+     * P(X_(t)|X_(t-1))
+     *
+     * @param prevStep State in the previous step.
+     * @return Next state, randomly generated using probability table from previous state.
+     */
     private boolean getTransition(boolean prevStep)
     {
             return rnd.nextDouble() < transitionProbs[prevStep ? 0 : 1];
     }
 
-    private double probEvidenceFromSample(boolean state, int timeStep)
+    /**
+     * Gets the probability of the given evidence occurring, given state.
+     * P(e|X)
+     *
+     * @param state State to use for probability calculation.
+     * @param evidence Set of the evidence to calculate the probability of
+     * @return Probability of evidence, given state.
+     */
+    private double probEvidenceFromSample(boolean state, Map<String, Boolean> evidence)
     {
-        Map<String, Boolean> evidenceSet = evidenceContainer.getEvidenceAtTimestep(timeStep);
-
         double probability = 1;
 
-        for (String key : evidenceSet.keySet())
+        for (String key : evidence.keySet())
         {
-            boolean evidence = evidenceSet.get(key);
+            boolean evidencePiece = evidence.get(key);
             double evidenceProb = evidenceProbs.get(key)[state ? 0 : 1];
-            if (!evidence)
+            if (!evidencePiece)
                 evidenceProb = 1 - evidenceProb;
             probability *= evidenceProb;
         }
@@ -84,6 +128,15 @@ public class DynamicNetwork
         return probability;
     }
 
+    /**
+     * Updates the particleSamples based on the given weights.
+     * The updates are done randomly, with probability being a
+     * result of the weights from the previous time-step.
+     *
+     * @param weights Vector of weights for associated particleSamples.
+     * @return estimate of this sample having a "positive" state (state [0])
+     *         based on the ratio of reselected samples in the state.
+     */
     private double weightedSampleWithReplacement(double[] weights)
     {
         double[] totalWeights = {0, 0};
