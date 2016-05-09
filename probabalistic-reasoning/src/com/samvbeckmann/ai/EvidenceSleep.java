@@ -25,6 +25,8 @@ public class EvidenceSleep implements IEvidence
     public void addEvidence(String key, boolean value, int timestep)
     {
         Map<String, Boolean> currentEvidenceAtTimestep = evidenceHistory.get(timestep);
+        if (currentEvidenceAtTimestep == null)
+            currentEvidenceAtTimestep = new HashMap<>();
         currentEvidenceAtTimestep.put(key, value);
         evidenceHistory.put(timestep, currentEvidenceAtTimestep);
     }

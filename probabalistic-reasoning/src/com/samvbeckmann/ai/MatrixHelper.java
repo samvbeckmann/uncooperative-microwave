@@ -74,6 +74,20 @@ public final class MatrixHelper
         return result;
     }
 
+    @NotNull
+    public static double[] pointwiseMultiplyVectors(double[] first, double[] second)
+    {
+        if (first.length != second.length)
+            System.exit(10);
+
+        double[] result = new double[first.length];
+
+        for (int i = 0; i < first.length; i++)
+            result[i] = first[i] * second[i];
+
+        return result;
+    }
+
     private static boolean monogamousRows(double[][] matrix)
     {
         int rowLength = matrix[0].length;
