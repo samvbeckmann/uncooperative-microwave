@@ -50,12 +50,12 @@ public class HiddenMarkovModel
     @Nullable
     public double[][] fixedLagSmoothing(int maxTimeStep, int lagLength)
     {
-        double[][] smoothedVector = new double[maxTimeStep][2];
+        double[][] smoothedVector = new double[maxTimeStep + 1][2];
 
         double[] forwardMessage = {initialProbability, 1 - initialProbability};
         double[][] backwardTransformation = {{1, 0}, {0, 1}};
 
-        for (int timestep = 1; timestep < maxTimeStep; timestep++)
+        for (int timestep = 1; timestep <= maxTimeStep; timestep++)
         {
             double[][] sensorAtTimestep = evidenceTransitions.get(evidenceHistory.get(timestep));
 
@@ -82,8 +82,7 @@ public class HiddenMarkovModel
                 double[] result = MatrixHelper.pointwiseMultiplyVectors(intermediate, forwardMessage);
                 result = Normalizer.normalize(result);
                 smoothedVector[timestep] = result;
-            } else
-                smoothedVector[timestep] = null;
+            }
         }
 
         return smoothedVector;
@@ -91,8 +90,8 @@ public class HiddenMarkovModel
 
     public double[][] forwardBackward(int maxTimeStep)
     {
-        double[][] forwardVector = new double[maxTimeStep][2];
-        double[][] smoothedVector = new double[maxTimeStep][2];
+        double[][] forwardVector = new double[maxTimeStep + 1][2];
+        double[][] smoothedVector = new double[maxTimeStep + 1][2];
 
         forwardVector[0] = new double[]{initialProbability, 1 - initialProbability};
 
@@ -107,6 +106,29 @@ public class HiddenMarkovModel
         {
             smoothedVector[i] = Normalizer.normalize(MatrixHelper.pointwiseMultiplyVectors(forwardVector[i], backwardMessage));
             backwardMessage = backwardOperation(backwardMessage, evidenceTransitions.get(evidenceHistory.get(i)));
+        }
+
+        return smoothedVector;
+    }
+
+    public double[][] countryDance(int maxTimeStep)
+    {
+        double[] forwardVector = {initialProbability, 1 - initialProbability};
+        double[] backwardMessage = {1, 1};
+        double[][] smoothedVector = new double[maxTimeStep + 1][2];
+
+        for (int i = 1; i <= maxTimeStep; i++)
+        {
+            forwardVector = forwardOperation(forwardVector, evidenceTransitions.get(evidenceHistory.get(i)));
+        }
+
+        for (int i = maxTimeStep; i <= 1; i--)
+        {
+            smoothedVector[i] = Normalizer.normalize(MatrixHelper.pointwiseMultiplyVectors(forwardVector, backwardMessage));
+
+            double[][] intermediate = MatrixHelper.invert2x2(MatrixHelper.transpose(stateTransitions));
+            intermediate = MatrixHelper.multiply2x2(intermediate, MatrixHelper.invert2x2(evidenceTransitions.get(evidenceHistory.get(i))));
+            forwardVector = MatrixHelper.multiplyMatrixByVector(intermediate, forwardVector);
         }
 
         return smoothedVector;
