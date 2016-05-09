@@ -45,14 +45,13 @@ public class Tester
         double[][] fixedLag3 = tester.hmm.fixedLagSmoothing(25, 3);
         double[][] fixedLag4 = tester.hmm.fixedLagSmoothing(25, 4);
         double[][] fixedLag5 = tester.hmm.fixedLagSmoothing(25, 5);
-        // TODO: Write test for Particle Filtering algorithm.
+        double[][] particleFiltering = tester.dbn.fullParticleFiltering(25, 1000);
 
-        System.out.println(tester.formatResults(25, forwardBackward, countryDance, fixedLag2, fixedLag3, fixedLag4, fixedLag5));
+        System.out.println(tester.formatResults(25, forwardBackward, countryDance, fixedLag2, fixedLag3, fixedLag4, fixedLag5, particleFiltering));
     }
 
     /**
-     * Creates a new Tester, which in turn creates a new DBN and HMM
-     * using problem data.
+     * Creates a new Tester, which in turn creates a new DBN and HMM using problem data.
      */
     private Tester()
     {

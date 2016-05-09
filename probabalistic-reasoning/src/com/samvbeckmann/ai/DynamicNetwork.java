@@ -57,36 +57,46 @@ class DynamicNetwork
     }
 
     /**
-     * Initializes the particle filtering algorithm for this DBN.
-     * Must be called before {@link #particleFiltering(int)} is called
-     * for the first time.
+     * Initializes the performs the particle filtering algorithm for this DBN.
+     * Goes from timestep 1 until maxTimestep.
      *
+     * @param maxTimestep Maximum timestep to calculate to.
      * @param n Number of samples to use in Particle Filtering.
+     * @return A vector or probability distribution estimates over states.
      */
-    public void initParticleFiltering(int n)
+    public double[][] fullParticleFiltering(int maxTimestep, int n)
     {
         particleSamples = new boolean[n];
         for (int i = 0; i < particleSamples.length; i++)
-        {
             particleSamples[i] = rnd.nextDouble() < initProb;
+
+        double[][] resultProbabilities = new double[maxTimestep + 1][2];
+
+        for (int i = 1; i <= maxTimestep; i++)
+        {
+            resultProbabilities[i] = particleFiltering(i);
         }
+
+        return resultProbabilities;
     }
 
     /**
      * Performs the particle filtering algorithm in the given timestep.
-     * TODO: Write more documentation, take another at algorithm
+     * Uses transition table and evidence to generate new samples from
+     * samples at the previous timestep. Ratios of the new samples
+     * give probability estimates for the next timestep.
      *
      * @param timeStep Timestep to perform the algorithm on.
-     * @return Estimate of state probability at the given timestep.
+     * @return Estimate of state probability distribution at the given timestep.
      */
-    private double particleFiltering(int timeStep)
+    private double[] particleFiltering(int timeStep)
     {
         double[] weights = new double[particleSamples.length];
 
         for (int i = 0; i < particleSamples.length; i++)
         {
             particleSamples[i] = getTransition(particleSamples[i]);
-            weights[i] = probEvidenceFromSample(particleSamples[i], evidenceContainer.getEvidenceAtTimestep(timeStep));
+            weights[i] = probEvidenceGivenState(evidenceContainer.getEvidenceAtTimestep(timeStep), particleSamples[i]);
         }
 
         return weightedSampleWithReplacement(weights);
@@ -112,7 +122,7 @@ class DynamicNetwork
      * @param evidence Set of the evidence to calculate the probability of
      * @return Probability of evidence, given state.
      */
-    private double probEvidenceFromSample(boolean state, Map<String, Boolean> evidence)
+    private double probEvidenceGivenState(Map<String, Boolean> evidence, boolean state)
     {
         double probability = 1;
 
@@ -134,19 +144,18 @@ class DynamicNetwork
      * result of the weights from the previous time-step.
      *
      * @param weights Vector of weights for associated particleSamples.
-     * @return estimate of this sample having a "positive" state (state [0])
-     *         based on the ratio of reselected samples in the state.
+     * @return probability distribution over states, calculated by the
+     *         ratio of states in teh redistributed samples.
      */
-    private double weightedSampleWithReplacement(double[] weights)
+    private double[] weightedSampleWithReplacement(double[] weights)
     {
         double[] totalWeights = {0, 0};
+        double[] result = new double[2];
 
         for (int i = 0; i < particleSamples.length; i++)
-        {
             totalWeights[particleSamples[i] ? 0 : 1] += weights[i];
-        }
 
-        Normalizer.normalize(totalWeights);
+        totalWeights = Normalizer.normalize(totalWeights);
         int numPositiveNextSamples = 0;
 
         for (int i = 0; i < particleSamples.length; i++)
@@ -156,7 +165,10 @@ class DynamicNetwork
             if (nextSamplePositive) numPositiveNextSamples++;
         }
 
-        return ((double) numPositiveNextSamples) / particleSamples.length;
+        result[0] = ((double) numPositiveNextSamples) / particleSamples.length;
+        result[1] = 1 - result[0];
+
+        return result;
     }
 
 }
