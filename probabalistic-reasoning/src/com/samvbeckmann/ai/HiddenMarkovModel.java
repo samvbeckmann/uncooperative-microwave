@@ -122,7 +122,7 @@ public class HiddenMarkovModel
             forwardVector = forwardOperation(forwardVector, evidenceHistory.get(i));
         }
 
-        for (int i = maxTimeStep; i <= 1; i--)
+        for (int i = maxTimeStep; i >= 1; i--)
         {
             smoothedVector[i] = Normalizer.normalize(MatrixHelper.pointwiseMultiplyVectors(forwardVector, backwardMessage));
 
