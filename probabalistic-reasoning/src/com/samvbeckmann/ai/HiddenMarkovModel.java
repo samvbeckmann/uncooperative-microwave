@@ -14,7 +14,7 @@ public class HiddenMarkovModel
     private double initialProbability;
     private double[][] stateTransitions;
     private Map<String, double[][]> evidenceTransitions;
-    private Map<Integer, String> evidenceHistory;
+    private Map<Integer, double[][]> evidenceHistory;
 
     public HiddenMarkovModel(double initialProbability,
                              double[][] stateTransitions,
@@ -36,7 +36,7 @@ public class HiddenMarkovModel
      */
     public void addEvidence(int timeStep, String evidence)
     {
-        evidenceHistory.put(timeStep, evidence);
+        evidenceHistory.put(timeStep, evidenceTransitions.get(evidence));
     }
 
     /**
@@ -57,12 +57,12 @@ public class HiddenMarkovModel
 
         for (int timestep = 1; timestep <= maxTimeStep; timestep++)
         {
-            double[][] sensorAtTimestep = evidenceTransitions.get(evidenceHistory.get(timestep));
+            double[][] sensorAtTimestep = evidenceHistory.get(timestep);
 
             if (timestep > lagLength)
             {
                 forwardMessage = forwardOperation(forwardMessage, sensorAtTimestep);
-                double[][] laggedEvidence = evidenceTransitions.get(evidenceHistory.get(timestep - lagLength));
+                double[][] laggedEvidence = evidenceHistory.get(timestep - lagLength);
 
                 double[][] intermediate = MatrixHelper.invert2x2(laggedEvidence);
                 intermediate = MatrixHelper.multiply2x2(intermediate, MatrixHelper.invert2x2(stateTransitions));
@@ -99,13 +99,13 @@ public class HiddenMarkovModel
 
         for (int i = 1; i <= maxTimeStep; i++)
         {
-            forwardVector[i] = forwardOperation(forwardVector[i - 1], evidenceTransitions.get(evidenceHistory.get(i)));
+            forwardVector[i] = forwardOperation(forwardVector[i - 1], evidenceHistory.get(i));
         }
 
         for (int i = maxTimeStep; i >= 1; i--)
         {
             smoothedVector[i] = Normalizer.normalize(MatrixHelper.pointwiseMultiplyVectors(forwardVector[i], backwardMessage));
-            backwardMessage = backwardOperation(backwardMessage, evidenceTransitions.get(evidenceHistory.get(i)));
+            backwardMessage = backwardOperation(backwardMessage, evidenceHistory.get(i));
         }
 
         return smoothedVector;
@@ -119,7 +119,7 @@ public class HiddenMarkovModel
 
         for (int i = 1; i <= maxTimeStep; i++)
         {
-            forwardVector = forwardOperation(forwardVector, evidenceTransitions.get(evidenceHistory.get(i)));
+            forwardVector = forwardOperation(forwardVector, evidenceHistory.get(i));
         }
 
         for (int i = maxTimeStep; i <= 1; i--)
@@ -127,7 +127,7 @@ public class HiddenMarkovModel
             smoothedVector[i] = Normalizer.normalize(MatrixHelper.pointwiseMultiplyVectors(forwardVector, backwardMessage));
 
             double[][] intermediate = MatrixHelper.invert2x2(MatrixHelper.transpose(stateTransitions));
-            intermediate = MatrixHelper.multiply2x2(intermediate, MatrixHelper.invert2x2(evidenceTransitions.get(evidenceHistory.get(i))));
+            intermediate = MatrixHelper.multiply2x2(intermediate, MatrixHelper.invert2x2(evidenceHistory.get(i)));
             forwardVector = MatrixHelper.multiplyMatrixByVector(intermediate, forwardVector);
         }
 

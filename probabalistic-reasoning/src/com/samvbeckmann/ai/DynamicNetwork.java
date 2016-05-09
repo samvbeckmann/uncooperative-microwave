@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class DynamicNetwork
 {
-    private IEvidence evidenceContainer;
+    public IEvidence evidenceContainer;
 
     private double initProb;
     private double[] transitionProbs = new double[2]; // Only supports boolean states
