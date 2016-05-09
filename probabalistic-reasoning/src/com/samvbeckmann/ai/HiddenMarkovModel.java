@@ -58,7 +58,14 @@ public class HiddenMarkovModel
         }
 
         if (timestep > lagLength)
-            return Normalizer.normalize(MatrixHelper.multiplyMatrixByVector(backwardTransformation, forwardMessage));
+        {
+            double[] ones = {1, 1};
+            double[] intermediate = Normalizer.normalize(MatrixHelper.multiplyMatrixByVector(backwardTransformation, ones));
+            double[] result = new double[2];
+            for (int i = 0; i < 2; i++)
+                result[i] = forwardMessage[i] * intermediate[i];
+            return result;
+        }
         else
             return null;
     }
