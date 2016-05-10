@@ -88,8 +88,8 @@ class HiddenMarkovModel
             if (timestep > lagLength)
             {
                 double[] ones = {1, 1};
-                double[] intermediate = MatrixHelper.multiplyMatrixByVector(backwardTransformation, ones);
-                double[] result = MatrixHelper.pointwiseMultiplyVectors(intermediate, forwardMessage);
+                double[] backwardMessage = MatrixHelper.multiplyMatrixByVector(backwardTransformation, ones);
+                double[] result = MatrixHelper.pointwiseMultiplyVectors(backwardMessage, forwardMessage);
                 result = Normalizer.normalize(result);
                 smoothedVector[timestep] = result;
             }
